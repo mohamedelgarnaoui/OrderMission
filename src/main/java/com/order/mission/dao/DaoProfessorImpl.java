@@ -141,8 +141,16 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Departement> getAllDepartement() {
-		Query q = em.createNamedQuery("select dp from Departement dp");
+		Query q = em.createQuery("select dp from Departement dp");
 		return q.getResultList();
+	}
+
+	@Override
+	public Professor loginProf(String matricule, String password) {
+		Query q = em.createQuery("select P FROM Professor P WHERE P.matricule = :m and P.password = :pass");
+		q.setParameter("m", matricule);
+		q.setParameter("pass", password);
+		return (Professor) q.getSingleResult();
 	}
 
 }
