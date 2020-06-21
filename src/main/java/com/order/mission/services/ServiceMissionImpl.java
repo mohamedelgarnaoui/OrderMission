@@ -2,6 +2,8 @@ package com.order.mission.services;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.order.mission.dao.IDaoMission;
 import com.order.mission.entities.DetailMission;
 import com.order.mission.entities.DocumentType;
@@ -10,6 +12,7 @@ import com.order.mission.entities.Mission;
 import com.order.mission.entities.State;
 import com.order.mission.entities.Transport;
 
+@Transactional
 public class ServiceMissionImpl implements IServiceMission {
 
 	IDaoMission dao;

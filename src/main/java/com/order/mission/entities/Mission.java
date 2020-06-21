@@ -19,9 +19,7 @@ public class Mission {
 	private Date returnTime;
 	private Date creationDate;
 	private Date expiryDate;
-	@ManyToOne
 	private String rejectionRaison;
-	@ManyToOne
 	private String comment;
 	@ManyToOne
 	private State state;

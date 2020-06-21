@@ -2,16 +2,23 @@ package com.order.mission.services;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.order.mission.dao.IDaoProfessor;
 import com.order.mission.entities.Departement;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
 
+@Transactional
 public class ServiceProfImpl implements IServiceProf {
 
 	IDaoProfessor dao;
 	
+	public void setDao(IDaoProfessor dao) {
+		this.dao = dao;
+	}
+
 	@Override
 	public Professor addProfessor(Professor p) {
 		return dao.addProfessor(p);
