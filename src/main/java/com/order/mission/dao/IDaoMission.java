@@ -44,7 +44,7 @@ public interface IDaoMission {
 	public Transport deleteTransport(int idTransport);
 	public Transport updateTransport(Transport t);
 	public Transport getTransport(int idTransport);
-	public List<Transport> getTransport();
+	public List<Transport> getAllTransport();
 
 	//State
 	public State AddState(State s);
