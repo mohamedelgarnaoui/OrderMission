@@ -27,7 +27,8 @@ public class Professor {
 	private String numCIN;
 	private String resume;
 	private String photo;
-	private String cINPrinted;
+	private String CINPrinted;
+	private String status;
 	@ManyToOne
 	private Departement departement;
 	@OneToMany(mappedBy = "professor")
@@ -41,7 +42,7 @@ public class Professor {
 	
 	public Professor(int idProfessor, String email,String matricule, String password, String lastName, String firstName, Date birthDate,
 			short adresses, String city, String phone, String mobile, String numCIN, String resume, String photo,
-			String cINPrinted) {
+			String CINPrinted, String status) {
 		super();
 		this.idProfessor = idProfessor;
 		this.email = email;
@@ -57,10 +58,11 @@ public class Professor {
 		this.numCIN = numCIN;
 		this.resume = resume;
 		this.photo = photo;
-		this.cINPrinted = cINPrinted;
+		this.CINPrinted = CINPrinted;
+		this.status = status;
 	}
 	public Professor(String email,String matricule, String password, String lastName, String firstName, Date birthDate, short adresses,
-			String city, String phone, String mobile, String numCIN, String resume, String photo, String cINPrinted) {
+			String city, String phone, String mobile, String numCIN, String resume, String photo, String CINPrinted, String status) {
 		super();
 		this.email = email;
 		this.matricule = matricule;
@@ -75,7 +77,8 @@ public class Professor {
 		this.numCIN = numCIN;
 		this.resume = resume;
 		this.photo = photo;
-		this.cINPrinted = cINPrinted;
+		this.CINPrinted = CINPrinted;
+		this.status = status;
 	}
 
 	public int getIdProfessor() {
@@ -191,11 +194,19 @@ public class Professor {
 	}
 
 	public String getcINPrinted() {
-		return cINPrinted;
+		return CINPrinted;
 	}
 
 	public void setcINPrinted(String cINPrinted) {
-		this.cINPrinted = cINPrinted;
+		this.CINPrinted = cINPrinted;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Departement getDepartement() {
