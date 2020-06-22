@@ -53,5 +53,19 @@ public interface IServiceMission {
 	public State getState(int idState);
 	public List<State> getAllState();
 
+	//getAllmisssionbydepartement(d)
+	public Mission getAllMisssionByDepartement(int idDep);
+
+	//getalltransportbymission
+	public List<Transport> getAllTransportByMission(int idMission);
+
+	//getstatbymission
+	public State getStatByMission(int idMission);
+
+	//get detailbymission
+	public DetailMission detailmissionByMission(int idMission);
+
+	//getjustificationbymission
+	public JustificationDocument getJustificationDocByMission(int idMission);
 
 }

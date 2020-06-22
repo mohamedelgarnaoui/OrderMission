@@ -204,4 +204,39 @@ public class DaoMissionImpl implements IDaoMission{
 		return q.getResultList();
 	}
 
+	@Override
+	public Mission getAllMisssionByDepartement(int idDep) {
+		Query q = em.createQuery("select m from Mission m where m.departement.idDep=:idD");
+		q.setParameter("idD", idDep);
+		return (Mission) q.getResultList();
+	}
+
+	@Override
+	public List<Transport> getAllTransportByMission(int idMission) {
+		Query q = em.createQuery("select t from Transport t where t.mission.idMission=:idm");
+		q.setParameter("idm", idMission);
+		return q.getResultList();
+	}
+
+	@Override
+	public State getStatByMission(int idMission) {
+		Query q = em.createQuery("select s from State where s.mission.idMission=:idm");
+		q.setParameter("idm", idMission);
+		return (State) q.getSingleResult();
+	}
+
+	@Override
+	public DetailMission detailmissionByMission(int idMission) {
+		Query q = em.createQuery("select dm from DetailMission dm where dm.mission.idMission=:idDm");
+		q.setParameter("idDm", idMission);
+		return (DetailMission) q.getSingleResult();
+	}
+
+	@Override
+	public JustificationDocument getJustificationDocByMission(int idMission) {
+		Query q = em.createQuery("select jd from JustificationDocument jd where jd.mission.idMission=:idm");
+		q.setParameter("idm", idMission);
+		return (JustificationDocument) q.getSingleResult();
+	}
+
 }

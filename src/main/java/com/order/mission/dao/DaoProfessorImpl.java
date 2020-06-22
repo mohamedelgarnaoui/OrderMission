@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.order.mission.entities.Departement;
+import com.order.mission.entities.Mission;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
@@ -151,6 +152,45 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		q.setParameter("m", matricule);
 		q.setParameter("pass", password);
 		return (Professor) q.getSingleResult();
+	}
+
+	@Override
+	public List<Mission> getAllMissionByProf(int idProfessor) {
+		Query q = em.createQuery("select M FROM Mission M WHERE M.professor.idProfessor=:idP");
+		q.setParameter("idP", idProfessor);
+		return q.getResultList();
+	}
+
+	@Override
+	public List<Privileges> getallpreviligebyprof(int idProfessor) {
+		Query q =em.createQuery("select pr from Privileges pr and ProfessorGrade pg "
+								+ "where pr.gradeProfessor.idGrade=pg.idGrade"
+								+ "and pg.professor.idProfessor=:idp");
+		q.setParameter("idp",idProfessor);
+		return q.getResultList();
+	}
+
+	@Override
+	public Privileges givProfPrivileg(Privileges pv,Professor p,ProfessorGrade pg) {
+		pv.setGradeProfessor(pg);
+		em.persist(pv);
+		pg.setProfessor(p);
+		em.merge(pg);
+		return pv;
+	}
+
+	@Override
+	public List<ProfessorGrade> getallgradbyprof(int idProfessor) {
+		Query q = em.createQuery("select pg from ProfessorGrade pg "
+				+ "where pg.professor.idProfessor=:idp");
+		q.setParameter("idp", idProfessor);
+		return q.getResultList();
+	}
+
+	@Override
+	public Professor upStatusProf(Professor p) {
+		em.merge(p);
+		return p;
 	}
 
 }

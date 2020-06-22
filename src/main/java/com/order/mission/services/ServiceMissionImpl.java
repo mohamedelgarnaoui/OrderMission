@@ -171,4 +171,29 @@ public class ServiceMissionImpl implements IServiceMission {
 		return dao.getAllState();
 	}
 
+	@Override
+	public Mission getAllMisssionByDepartement(int idDep) {
+		return dao.getAllMisssionByDepartement(idDep);
+	}
+
+	@Override
+	public List<Transport> getAllTransportByMission(int idMission) {
+		return dao.getAllTransportByMission(idMission);
+	}
+
+	@Override
+	public State getStatByMission(int idMission) {
+		return dao.getStatByMission(idMission);
+	}
+
+	@Override
+	public DetailMission detailmissionByMission(int idMission) {
+		return dao.detailmissionByMission(idMission);
+	}
+
+	@Override
+	public JustificationDocument getJustificationDocByMission(int idMission) {
+		return dao.getJustificationDocByMission(idMission);
+	}
+
 }

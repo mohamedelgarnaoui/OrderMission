@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.order.mission.dao.IDaoProfessor;
 import com.order.mission.entities.Departement;
+import com.order.mission.entities.Mission;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
@@ -127,6 +128,31 @@ public class ServiceProfImpl implements IServiceProf {
 	@Override
 	public Professor loginProf(String matricule, String password) {
 		return dao.loginProf(matricule, password);
+	}
+
+	@Override
+	public List<Mission> getAllMissionByProf(int idProfessor) {
+		return dao.getAllMissionByProf(idProfessor);
+	}
+
+	@Override
+	public List<Privileges> getallpreviligebyprof(int idProfessor) {
+		return dao.getallpreviligebyprof(idProfessor);
+	}
+
+	@Override
+	public Privileges givProfPrivileg(Privileges pv, Professor p, ProfessorGrade pg) {
+		return dao.givProfPrivileg(pv, p, pg);
+	}
+
+	@Override
+	public List<ProfessorGrade> getallgradbyprof(int idProfessor) {
+		return dao.getallgradbyprof(idProfessor);
+	}
+
+	@Override
+	public Professor upStatusProf(Professor p) {
+		return dao.upStatusProf(p);
 	}
 
 }
