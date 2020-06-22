@@ -154,6 +154,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		return (Professor) q.getSingleResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Mission> getAllMissionByProf(int idProfessor) {
 		Query q = em.createQuery("select M FROM Mission M WHERE M.professor.idProfessor=:idP");
@@ -161,6 +162,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		return q.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Privileges> getallpreviligebyprof(int idProfessor) {
 		Query q =em.createQuery("select pr from Privileges pr and ProfessorGrade pg "
@@ -179,6 +181,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		return pv;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ProfessorGrade> getallgradbyprof(int idProfessor) {
 		Query q = em.createQuery("select pg from ProfessorGrade pg "

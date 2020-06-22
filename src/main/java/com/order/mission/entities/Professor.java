@@ -20,7 +20,7 @@ public class Professor {
 	private String lastName;
 	private String firstName;
 	private Date birthDate;
-	private short adresses;
+	private String adresses;
 	private String city;
 	private String phone;
 	private String mobile;
@@ -41,7 +41,7 @@ public class Professor {
 	}
 	
 	public Professor(int idProfessor, String email,String matricule, String password, String lastName, String firstName, Date birthDate,
-			short adresses, String city, String phone, String mobile, String numCIN, String resume, String photo,
+			String adresses, String city, String phone, String mobile, String numCIN, String resume, String photo,
 			String CINPrinted, String status) {
 		super();
 		this.idProfessor = idProfessor;
@@ -61,7 +61,7 @@ public class Professor {
 		this.CINPrinted = CINPrinted;
 		this.status = status;
 	}
-	public Professor(String email,String matricule, String password, String lastName, String firstName, Date birthDate, short adresses,
+	public Professor(String email,String matricule, String password, String lastName, String firstName, Date birthDate, String adresses,
 			String city, String phone, String mobile, String numCIN, String resume, String photo, String CINPrinted, String status) {
 		super();
 		this.email = email;
@@ -137,11 +137,11 @@ public class Professor {
 		this.birthDate = birthDate;
 	}
 
-	public short getAdresses() {
+	public String getAdresses() {
 		return adresses;
 	}
 
-	public void setAdresses(short adresses) {
+	public void setAdresses(String adresses) {
 		this.adresses = adresses;
 	}
 

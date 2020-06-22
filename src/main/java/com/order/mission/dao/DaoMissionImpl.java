@@ -211,6 +211,7 @@ public class DaoMissionImpl implements IDaoMission{
 		return (Mission) q.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Transport> getAllTransportByMission(int idMission) {
 		Query q = em.createQuery("select t from Transport t where t.mission.idMission=:idm");
