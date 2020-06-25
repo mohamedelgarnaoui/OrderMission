@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -17,9 +18,10 @@ public class State {
 	private String name;
 	private Date startDate;
 	private Date endDate;
-	@OneToMany
+	@OneToMany(mappedBy = "state")
 	private Collection<Mission> mission;
 	@OneToOne
+	@JoinColumn(name = "id_state")
 	private State state;
 
 	public State() {

@@ -2,6 +2,7 @@ package com.order.mission.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.order.mission.dao.IDaoProfessor;
@@ -41,8 +42,8 @@ public class ServiceProfImpl implements IServiceProf {
 	}
 
 	@Override
-	public Professor getProfessor(String matricule) {
-		return dao.getProfessor(matricule);
+	public Professor getProfessor(String username) {
+		return dao.getProfessor(username);
 	}
 
 	@Override
@@ -126,8 +127,8 @@ public class ServiceProfImpl implements IServiceProf {
 	}
 
 	@Override
-	public Professor loginProf(String matricule, String password) {
-		return dao.loginProf(matricule, password);
+	public Professor loginProf(String username, String password) {
+		return dao.loginProf(username, password);
 	}
 
 	@Override
@@ -154,5 +155,12 @@ public class ServiceProfImpl implements IServiceProf {
 	public Professor upStatusProf(Professor p) {
 		return dao.upStatusProf(p);
 	}
+
+	@Override
+	public Professor getProfByMatricule(String username) {
+		// TODO Auto-generated method stub
+		return dao.getProfByMatricule(username);
+	}
+
 
 }

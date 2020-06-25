@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -22,14 +23,17 @@ public class Mission {
 	private String rejectionRaison;
 	private String comment;
 	@ManyToOne
+	@JoinColumn(name = "id_state")
 	private State state;
 	@ManyToOne
+	@JoinColumn(name = "id_professor")
 	private Professor professor;
 	@ManyToOne
+	@JoinColumn(name = "id_departement")
 	private Departement departement;
-	@OneToMany
+	@OneToMany(mappedBy = "mission")
 	private Collection<Transport> transport;
-	@OneToMany
+	@OneToMany(mappedBy = "mission")
 	private Collection<JustificationDocument> justificationDocument;
 	@OneToMany
 	private Collection<DetailMission> detailMission;

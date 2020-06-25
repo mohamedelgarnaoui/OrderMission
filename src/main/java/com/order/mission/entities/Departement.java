@@ -14,9 +14,9 @@ public class Departement {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idDep;
 	private String name;
-	@OneToMany
+	@OneToMany(mappedBy = "departement")
 	private Collection<Professor> professors;
-	@OneToMany
+	@OneToMany(mappedBy = "departement")
 	private Collection<Mission> missions;
 
 	public Departement() {

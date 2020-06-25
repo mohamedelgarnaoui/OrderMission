@@ -18,6 +18,7 @@ public interface IDaoProfessor {
 	public Professor getProfessor(String matricule);
 	public List<Professor> getAllProfessor();
 	public Professor loginProf(String matricule, String password);
+	public Professor getProfByMatricule(String matricule);
 
 	//professorgrand
 	public ProfessorGrade addProfessorGrade(ProfessorGrade pg);

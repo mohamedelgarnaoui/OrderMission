@@ -14,7 +14,7 @@ public class DocumentType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idType;
 	private String typeDocument;
-	@OneToMany
+	@OneToMany(mappedBy = "documentType")
 	private Collection<JustificationDocument> justificationDocument;
 
 	public DocumentType() {

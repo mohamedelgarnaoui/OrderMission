@@ -196,4 +196,11 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		return p;
 	}
 
+	@Override
+	public Professor getProfByMatricule(String matricule) {
+		Query q = em.createQuery("select p from Professor p where p.matricule = :m");
+		q.setParameter("m", matricule);
+		return (Professor) q.getSingleResult();
+	}
+
 }
