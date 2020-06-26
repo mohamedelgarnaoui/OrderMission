@@ -1,8 +1,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 
 
 <!DOCTYPE html>
@@ -18,28 +19,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
    <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- daterange picker -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datepicker/datepicker3.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/datepicker/datepicker3.css">
   <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/all.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/iCheck/all.css">
   <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.css">
   <!-- Bootstrap time Picker -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.css">
   <!-- Select2 -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/select2/select2.min.css">
+  <link rel="stylesheet" href="${contextPath}/resources/plugins/select2/select2.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/AdminLTE.min.css">
-  <!-- Choose a skin from the css/skins
+  <link rel="stylesheet" href="${contextPath}/resources/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="${contextPath}/resources/dist/css/skins/skin-blue.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -66,13 +67,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">Mohamed Elgarnaoui</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                  Mohamed Elgarnaoui - Java Professor
@@ -103,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>Mohamed Elgarnaoui</p>
@@ -190,13 +191,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Mission
-        <small>Ajouter Mission</small>
+        Professeur
+        <small>Ajouter Professeur</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Accueil</a></li>
-        <li><a href="#">Mission</a></li>
-        <li class="active">Ajouter Mission</li>
+        <li><a href="#">Professeur</a></li>
+        <li class="active">Ajouter Professeur</li>
       </ol>
     </section>
 
@@ -205,7 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Ajouter Mission</h3>
+          <h3 class="box-title">Ajouter Professeur</h3>
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -213,20 +214,60 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-         <f:form modelAttribute="missionM" action="addmiss" method="post">
           <div class="row">
-         
             <div class="col-md-6">
 				<!-- text input -->
                 <div class="form-group">
-                  <label>Sujet de la mission :</label>
-                  <f:input type="text" path="subject" class="form-control" placeholder="Enter ..."></f:input>
+                  <label>Votre nom :</label>
+                  <input type="text" class="form-control" placeholder="Nom ...">
                 </div>
-              <div class="input-group">
-                <label>Destination :</label>
-                <f:select class="form-control select2" path="destination" style="width: 100%;">
-                  <f:option selected="selected" value="" >selectionner votre destination</f:option>
-                </f:select>
+				<div class="form-group">
+                  <label>Votre prénom :</label>
+                  <input type="text" class="form-control" placeholder="Prénom ...">
+                </div>
+				<div class="form-group">
+                  <label>Matricule :</label>
+                  <input type="text" class="form-control" placeholder="matricule">
+                </div>
+				<div class="form-group">
+                  <label>Mot de passe :</label>
+                  <input type="password" class="form-control" placeholder="mot de passe ...">
+                </div>
+				<div class="form-group">
+                  <label>Votre email :</label>
+                  <input type="email" class="form-control" placeholder="email ...">
+                </div>
+				<div class="form-group">
+                  <label>Votre tél :</label>
+                  <input type="text" class="form-control" placeholder="tél ...">
+                </div>
+			
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+			  <!-- Date -->
+              <div class="form-group">
+                <label>Date de naissance :</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="datepicker">
+                </div>
+                <!-- /.input group -->
+              </div>
+			<div class="form-group">
+                <label>Votre CIN :</label>
+                <input type="text" class="form-control" placeholder="cin ...">
+            </div>
+			<div class="input-group">
+                <label>Ville :</label>
+                <select class="form-control select2" style="width: 100%;">
+                  <option selected="selected">selectionner votre ville</option>
+                  <option>Tanger</option>
+                  <option>Rabat</option>
+                </select>
 				<br/>
 				 <span class="input-group-btn">
 					<p style="height: 15px;"></p>
@@ -235,51 +276,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
 			  <div class="input-group">
                 <label>Département :</label>
-                <f:select class="form-control select2"  path="" style="width: 100%;">
-                  <f:option selected="selected" value="">selectionner votre Département</f:option>
-                </f:select>
+                <select class="form-control select2" style="width: 100%;">
+                  <option selected="selected">selectionner votre Département</option>
+                  <option>Informatique</option>
+                  <option>Physique</option>
+				  <option>Technologique</option>
+                </select>
 				<br/>
 				 <span class="input-group-btn">
 					<p style="height: 15px;"></p>
 					<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalDep">Ajouter une !</button>
 				  </span>
               </div>
-			  <div class="form-group">
-                <label>Moyen de transport :</label>
-                <f:select class="form-control select2" multiple="multiple"  path="" data-placeholder="choisissez vos moyens de transport" style="width: 100%;">
-                  <f:option value="">Voiture personnel</f:option>
-                </f:select>
+			  <label>Status :</label>
+			  <div class="input-group">
+                
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalStatus">Ajouter une !</button>
+				</span>
+                <select class="form-control select2" style="width: 100%;">
+                  <option selected="selected">selectionner votre status</option>
+                  <option>Valider</option>
+                  <option>Actif</option>
+                  <option>Rejter</option>
+                  <option>Bloquer</option>
+                </select>
+				
+				
               </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-			  <!-- Date and time range -->
-              <div class="form-group">
-                <label>Date d'aller et de retour :</label>
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                  </div>
-                  <f:input type="text"  path="" class="form-control pull-right" id="reservationtime"></f:input>
+			 	<div class="form-group">
+                  <label>Votre adresse :</label>
+                  <textarea class="form-control" placeholder="adresse ..."></textarea>
                 </div>
-                <!-- /.input group -->
-              </div>
-			   <!-- Date -->
-              <div class="form-group">
-                <label>Date d'expiration :</label>
-                <div class="input-group date">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <f:input type="text"  path="" class="form-control pull-right" id="datepicker"></f:input>
-                </div>
-                <!-- /.input group -->
-              </div>
+              
 			   <div class="form-group">
-                  <label for="exampleInputFile">Votre Justification :</label>
-                  <f:input type="file"  path="" id="exampleInputFile"></f:input>
-
+                  <label for="exampleInputFile">Votre Photo :</label>
+                  <input type="file" id="exampleInputFile">
                   <p class="help-block"></p>
                </div>
               <!-- /.form-group -->
@@ -287,16 +319,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.col -->
           </div>
           <!-- /.row -->
-        </f:form>
         </div>
         <!-- /.box-body -->
-        <div class="box-footer">
-			<button type="reset" class="btn btn-default">Réinistialiser</button>
-            <button type="submit" class="btn btn-primary">Ajouter mission</button>
+        <div class="box-footer " >
+            <button type="submit" class="btn btn-primary pull-right margin">Ajouter mission</button>
+			<button type="reset" class="btn btn-default pull-right margin">Réinistialiser</button>
         </div>
-      
       </div>
-      
       <!-- /.row -->
     </section>
 	<div class="modal fade" id="myModalDep" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -306,18 +335,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter Département</h4>
 			  </div>
-			  <f:form>
-				  <div class="modal-body">
-					<div class="form-group">
-					  <label>Nom du departement :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom dèpartement"></f:input>
-					</div>
-				  </div>
-				  <div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				  </div>
-			  </f:form>
+			  <div class="modal-body">
+				<div class="form-group">
+				  <label>Nom du departement :</label>
+				  <input type="text" class="form-control" placeholder="Entrer nom dèpartement">
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-primary">Sauvgarder</button>
+			  </div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -328,21 +355,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter Département</h4>
 			  </div>
-			  <f:form>
-				  <div class="modal-body">
-					<div class="form-group">
-					  <label>Nom du ville :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom du ville"></f:input>
-					</div>
-					<div class="form-group">
-					  <label>A quel pays appartient :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom du pays"></f:input>
-					</div>
-				  </div>
-			  </f:form>
+			  <div class="modal-body">
+				<div class="form-group">
+				  <label>Nom du ville :</label>
+				  <input type="text" class="form-control" placeholder="Entrer nom du ville">
+				</div>
+				<div class="form-group">
+				  <label>A quel pays appartient :</label>
+				  <input type="text" class="form-control" placeholder="Entrer nom du pays">
+				</div>
+			  </div>
 			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-primary">Sauvgarder</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+	<!-- /.modal Status -->
+	<div class="modal fade" id="myModalStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter Status</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="form-group">
+				  <label>Nom du status :</label>
+				  <input type="text" class="form-control" placeholder="Entrer status">
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-primary">Sauvgarder</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -367,32 +414,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="${pageContext.request.contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="${contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <!-- Select2 -->
-<script src="${pageContext.request.contextPath}/resources/plugins/select2/select2.full.min.js"></script>
+<script src="${contextPath}/resources/plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->
-<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.js"></script>
-<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="${contextPath}/resources/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="${contextPath}/resources/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="${contextPath}/resources/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="${contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
-<script src="${pageContext.request.contextPath}/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="${contextPath}/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- bootstrap color picker -->
-<script src="${pageContext.request.contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<script src="${contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- bootstrap time picker -->
-<script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="${contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- SlimScroll 1.3.0 -->
-<script src="${pageContext.request.contextPath}/resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="${contextPath}/resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- iCheck 1.0.1 -->
-<script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
+<script src="${contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
-<script src="${pageContext.request.contextPath}/resources/plugins/fastclick/fastclick.js"></script>
-<script src="${pageContext.request.contextPath}/resources/dist/js/app.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
+<script src="${contextPath}/resources/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="${contextPath}/resources/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="${contextPath}/resources/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
   $(function () {
