@@ -21,6 +21,7 @@ public class DaoMissionImpl implements IDaoMission{
 	@Override
 	public Mission AddMission(Mission m) {
 		em.persist(m);
+		em.flush();
 		return m;
 	}
 
@@ -28,6 +29,7 @@ public class DaoMissionImpl implements IDaoMission{
 	public Mission deleteMission(int idMission) {
 		Mission m = getMission(idMission);
 		em.remove(m);
+		em.flush();
 		return m;
 	}
 
@@ -83,6 +85,7 @@ public class DaoMissionImpl implements IDaoMission{
 	@Override
 	public JustificationDocument AddJustificationDocument(JustificationDocument jd) {
 		em.persist(jd);
+		em.flush();
 		return jd;
 	}
 
@@ -152,6 +155,7 @@ public class DaoMissionImpl implements IDaoMission{
 	public Transport deleteTransport(int idTransport) {
 		Transport t = getTransport(idTransport);
 		em.remove(t);
+		em.flush();
 		return t;
 	}
 
@@ -176,6 +180,7 @@ public class DaoMissionImpl implements IDaoMission{
 	@Override
 	public State AddState(State s) {
 		em.persist(s);
+		em.flush();
 		return s;
 	}
 
@@ -183,6 +188,7 @@ public class DaoMissionImpl implements IDaoMission{
 	public State deleteState(int idState) {
 		State s = getState(idState);
 		em.remove(s);
+		em.flush();
 		return s;
 	}
 
@@ -204,17 +210,18 @@ public class DaoMissionImpl implements IDaoMission{
 		return q.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Mission getAllMisssionByDepartement(int idDep) {
+	public List<Mission> getAllMisssionByDepartement(int idDep) {
 		Query q = em.createQuery("select m from Mission m where m.departement.idDep=:idD");
 		q.setParameter("idD", idDep);
-		return (Mission) q.getResultList();
+		return q.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Transport> getAllTransportByMission(int idMission) {
-		Query q = em.createQuery("select t from Transport t where t.mission.idMission=:idm");
+		Query q = em.createQuery("select t from Transport t JOIN t.missions m where m.idMission=:idm");
 		q.setParameter("idm", idMission);
 		return q.getResultList();
 	}
@@ -233,11 +240,46 @@ public class DaoMissionImpl implements IDaoMission{
 		return (DetailMission) q.getSingleResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JustificationDocument getJustificationDocByMission(int idMission) {
+	public List<JustificationDocument> getJustificationDocByMission(int idMission) {
 		Query q = em.createQuery("select jd from JustificationDocument jd where jd.mission.idMission=:idm");
 		q.setParameter("idm", idMission);
-		return (JustificationDocument) q.getSingleResult();
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mission> getAllMissionByProf(int idProfessor) {
+		Query q = em.createQuery("select M FROM Mission M WHERE M.professor.idProfessor=:idP");
+		q.setParameter("idP", idProfessor);
+		return q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mission> getAllMissionByDepByState(int idDep, int idState) {
+		Query q = em.createQuery("select m from Mission m where m.state.idState=:ids and m.departement.idDep = :idd");
+		q.setParameter("ids", idState);
+		q.setParameter("idd", idDep);
+		return q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mission> getAllMissionByProfByState(int idProf, int idState) {
+		Query q = em.createQuery("select m from Mission m where m.state.idState=:ids and m.professor.idProfessor = :idp");
+		q.setParameter("ids", idState);
+		q.setParameter("idp", idProf);
+		return q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mission> getAllMissionByState(int idState) {
+		Query q = em.createQuery("select m from Mission m where m.state.idState=:ids");
+		q.setParameter("ids", idState);
+		return q.getResultList();
 	}
 
 }

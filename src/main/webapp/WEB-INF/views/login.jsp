@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -38,7 +38,7 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Connectez-vous pour dÃ©marrer votre session</p>
+    <p class="login-box-msg">Connectez-vous pour démarrer votre session</p>
 
     <form action="${contextPath}/login" method="post">
       <div class="form-group has-feedback">
@@ -46,17 +46,17 @@
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <span>${message}</span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Mot de dapp">
+      <div class="form-group has-feedback ${error != null ? 'has-error' : ''}">
+        <input type="password" name="password" class="form-control" placeholder="Mot de passe">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         <span>${error}</span>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       </div>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Souviens-toi de moi
+              <input type="checkbox"> Se souvenir de moi
             </label>
           </div>
         </div>
@@ -67,9 +67,9 @@
         <!-- /.col -->
       </div>
     </form>
-    <a href="${contextPath}/registration" class="text-center">Créer un compte</a>
-
-    <a href="#">Informations de compte oubliÃ©es ?</a><br>
+    <!--  <a href="#">Informations de compte oubliées ?</a><br><br>-->
+    
+    <a href="${contextPath}/registration" class="text-center">Créer un compte</a><br>
 
   </div>
   <!-- /.login-box-body -->

@@ -1,7 +1,9 @@
 package com.order.mission.services;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.itextpdf.text.DocumentException;
 import com.order.mission.entities.DetailMission;
 import com.order.mission.entities.DocumentType;
 import com.order.mission.entities.JustificationDocument;
@@ -17,6 +19,8 @@ public interface IServiceMission {
 	public Mission updateMission(Mission m);
 	public Mission getMission(int idMission);
 	public List<Mission> getAllMission();
+
+	public void generatePDF(Mission m) throws DocumentException, IOException;
 
 	//DocumentType
 	public DocumentType AddDocumentType(DocumentType dt);
@@ -54,18 +58,20 @@ public interface IServiceMission {
 	public List<State> getAllState();
 
 	//getAllmisssionbydepartement(d)
-	public Mission getAllMisssionByDepartement(int idDep);
+	public List<Mission> getAllMissionByDep(int idDep);
+	
+	public List<Mission> getAllMissionByDepByState(int idDep, int idState);
+	public List<Mission> getAllMissionByProfByState(int idProf, int idState);
+	public List<Mission> getAllMissionByState(int idState);
 
-	//getalltransportbymission
+	public List<Mission> getAllMissionByProf(int idProfessor);
+
 	public List<Transport> getAllTransportByMission(int idMission);
 
-	//getstatbymission
 	public State getStatByMission(int idMission);
 
-	//get detailbymission
 	public DetailMission detailmissionByMission(int idMission);
 
-	//getjustificationbymission
-	public JustificationDocument getJustificationDocByMission(int idMission);
+	public List<JustificationDocument> getJustificationDocByMission(int idMission);
 
 }

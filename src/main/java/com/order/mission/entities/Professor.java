@@ -7,8 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Professor {
@@ -20,6 +26,7 @@ public class Professor {
 	private String password;
 	private String lastName;
 	private String firstName;
+	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 	private String adresses;
 	private String city;
@@ -30,10 +37,17 @@ public class Professor {
 	private String photo;
 	private String CINPrinted;
 	private String status;
+	private String profession;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateCreation;
 	@ManyToOne
 	@JoinColumn(name="id_departement")
 	private Departement departement;
-	@OneToMany(mappedBy = "professor")
+	@ManyToMany()
+	@JoinTable(name = "grades_profs",
+		joinColumns = @JoinColumn(name = "idProfessor"),
+		inverseJoinColumns =@JoinColumn(name = "idGrade"))
 	private Collection<ProfessorGrade> professorGrade;
 	@OneToMany(mappedBy = "professor")
 	private Collection<Mission> mission;
@@ -64,7 +78,8 @@ public class Professor {
 		this.status = status;
 	}
 	public Professor(String email,String matricule, String password, String lastName, String firstName, Date birthDate, String adresses,
-			String city, String phone, String mobile, String numCIN, String resume, String photo, String CINPrinted, String status) {
+			String city, String phone, String mobile, String numCIN, String resume, String photo, String CINPrinted, String status,
+			String profession) {
 		super();
 		this.email = email;
 		this.matricule = matricule;
@@ -81,6 +96,7 @@ public class Professor {
 		this.photo = photo;
 		this.CINPrinted = CINPrinted;
 		this.status = status;
+		this.profession = profession;
 	}
 
 	public int getIdProfessor() {
@@ -233,6 +249,30 @@ public class Professor {
 
 	public void setMission(Collection<Mission> mission) {
 		this.mission = mission;
+	}
+
+	public String getCINPrinted() {
+		return CINPrinted;
+	}
+
+	public void setCINPrinted(String cINPrinted) {
+		CINPrinted = cINPrinted;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public Date getDateCreation() {
+		return dateCreation;
+	}
+
+	public void setDateCreation(Date dateCreation) {
+		this.dateCreation = dateCreation;
 	}
 
 }

@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -15,7 +17,9 @@ public class Mission {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idMission;
 	private String subject;
-	private String destination;
+	@ManyToOne
+	@JoinColumn(name = "destination")
+	private Ville destination;
 	private Date departureTime;
 	private Date returnTime;
 	private Date creationDate;
@@ -31,7 +35,9 @@ public class Mission {
 	@ManyToOne
 	@JoinColumn(name = "id_departement")
 	private Departement departement;
-	@OneToMany(mappedBy = "mission")
+	@ManyToMany()
+	@JoinTable(name = "mission_trans", joinColumns = @JoinColumn(name = "id_mission"),
+	inverseJoinColumns = @JoinColumn(name="id_trans"))
 	private Collection<Transport> transport;
 	@OneToMany(mappedBy = "mission")
 	private Collection<JustificationDocument> justificationDocument;
@@ -42,7 +48,7 @@ public class Mission {
 		super();
 	}
 
-	public Mission(int idMission, String subject, String destination, Date departureTime, Date returnTime,
+	public Mission(int idMission, String subject, Ville destination, Date departureTime, Date returnTime,
 			Date creationDate, Date expiryDate, String rejectionRaison, String comment) {
 		super();
 		this.idMission = idMission;
@@ -56,7 +62,7 @@ public class Mission {
 		this.comment = comment;
 	}
 
-	public Mission(String subject, String destination, Date departureTime, Date returnTime, Date creationDate,
+	public Mission(String subject, Ville destination, Date departureTime, Date returnTime, Date creationDate,
 			Date expiryDate, String rejectionRaison, String comment) {
 		super();
 		this.subject = subject;
@@ -85,11 +91,11 @@ public class Mission {
 		this.subject = subject;
 	}
 
-	public String getDestination() {
+	public Ville getDestination() {
 		return destination;
 	}
 
-	public void setDestination(String destination) {
+	public void setDestination(Ville destination) {
 		this.destination = destination;
 	}
 

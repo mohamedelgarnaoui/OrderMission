@@ -3,10 +3,11 @@ package com.order.mission.services;
 import java.util.List;
 
 import com.order.mission.entities.Departement;
-import com.order.mission.entities.Mission;
+import com.order.mission.entities.Pays;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
+import com.order.mission.entities.Ville;
 
 public interface IServiceProf {
 
@@ -19,6 +20,7 @@ public interface IServiceProf {
 	public List<Professor> getAllProfessor();
 	public Professor loginProf(String username, String password);
 	public Professor getProfByMatricule(String username);
+	public Professor getConnectedProf();
 
 	//professorgrand
 	public ProfessorGrade addProfessorGrade(ProfessorGrade pg);
@@ -42,20 +44,23 @@ public interface IServiceProf {
 	public Departement getDepartement(int idDepartement);
 	public List<Departement> getAllDepartement();
 
-	//getAllmissionByProf(p)
-	public List<Mission> getAllMissionByProf(int idProfessor);
+	public List<Privileges> getAllPreviligeByProf(int idProfessor);
 
-	//getallpreviligebyprof(p)
-	public List<Privileges> getallpreviligebyprof(int idProfessor);
+	public Privileges givProfPrivileg(Privileges pv, Professor p, ProfessorGrade pg);
 
-	//givProfPrivileg(prv)
-	public Privileges givProfPrivileg(Privileges pv,Professor p,ProfessorGrade pg);
+	public List<ProfessorGrade> getAllGradeByProf(int idProfessor);
 
-	//getallgradbyprof
-	public List<ProfessorGrade> getallgradbyprof(int idProfessor);
+	public Professor updateStatusProf(Professor p);
 
-	//upStatusProf
-	public Professor upStatusProf(Professor p);
+	//ville
+	public Ville addVille(Ville v);
+	public List<Ville> getAllVille();
+	public List<Ville> getAllVilleByPays(Pays p);
+	public Ville getVille(int idVille);
+	//pays
+	public Pays addPays(Pays p);
+	public List<Pays> getAllPays();
+	public Pays getPays(String name);
 
 
 }

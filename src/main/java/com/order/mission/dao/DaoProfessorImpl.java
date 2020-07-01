@@ -7,10 +7,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.order.mission.entities.Departement;
-import com.order.mission.entities.Mission;
+import com.order.mission.entities.Pays;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
+import com.order.mission.entities.Ville;
 
 public class DaoProfessorImpl implements IDaoProfessor {
 
@@ -20,6 +21,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	@Override
 	public Professor addProfessor(Professor p) {
 		em.persist(p);
+		em.flush();
 		return p;
 	}
 
@@ -27,12 +29,14 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	public Professor deleteProfessor(int idProfessor) {
 		Professor p = em.find(Professor.class, idProfessor);
 		em.remove(p);
+		em.flush();
 		return p;
 	}
 
 	@Override
 	public Professor updateProfessor(Professor p) {
 		em.merge(p);
+		em.flush();
 		return p;
 	}
 
@@ -56,6 +60,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	@Override
 	public ProfessorGrade addProfessorGrade(ProfessorGrade pg) {
 		em.persist(pg);
+		em.flush();
 		return pg;
 	}
 
@@ -63,12 +68,14 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	public ProfessorGrade deleteProfessorGrade(int idProfessorGrade) {
 		ProfessorGrade pg = em.find(ProfessorGrade.class, idProfessorGrade);
 		em.remove(pg);
+		em.flush();
 		return pg;
 	}
 
 	@Override
 	public ProfessorGrade updateProfessorGrade(ProfessorGrade pg) {
 		em.merge(pg);
+		em.flush();
 		return pg;
 	}
 
@@ -87,6 +94,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	@Override
 	public Privileges addPrivileges(Privileges pv) {
 		em.persist(pv);
+		em.flush();
 		return pv;
 	}
 
@@ -94,6 +102,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	public Privileges deletePrivileges(int idPrivileges) {
 		Privileges pv = em.find(Privileges.class, idPrivileges);
 		em.remove(pv);
+		em.flush();
 		return pv;
 	}
 
@@ -118,6 +127,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	@Override
 	public Departement addDepartement(Departement dp) {
 		em.persist(dp);
+		em.flush();
 		return dp;
 	}
 
@@ -125,6 +135,7 @@ public class DaoProfessorImpl implements IDaoProfessor {
 	public Departement deleteDepartement(int idDepartement) {
 		Departement dp = em.find(Departement.class, idDepartement);
 		em.remove(dp);
+		em.flush();
 		return dp;
 	}
 
@@ -156,38 +167,28 @@ public class DaoProfessorImpl implements IDaoProfessor {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Mission> getAllMissionByProf(int idProfessor) {
-		Query q = em.createQuery("select M FROM Mission M WHERE M.professor.idProfessor=:idP");
-		q.setParameter("idP", idProfessor);
+	public List<Privileges> getAllPreviligeByGrade(int idGrade) {
+		Query q =em.createQuery("select pr from Privileges pr JOIN pr.gradeProfessors gr where gr.idGrade = :idg");
+		q.setParameter("idg",idGrade);
 		return q.getResultList();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Privileges> getallpreviligebyprof(int idProfessor) {
-		Query q =em.createQuery("select pr from Privileges pr and ProfessorGrade pg "
-								+ "where pr.gradeProfessor.idGrade=pg.idGrade"
-								+ "and pg.professor.idProfessor=:idp");
-		q.setParameter("idp",idProfessor);
+	public List<ProfessorGrade> getAllGradeByProf(int idProf) {
+		Query q =em.createQuery("select g from ProfessorGrade g JOIN g.professors p where p.idProfessor = :idp");
+		q.setParameter("idp",idProf);
 		return q.getResultList();
 	}
 
 	@Override
 	public Privileges givProfPrivileg(Privileges pv,Professor p,ProfessorGrade pg) {
-		pv.setGradeProfessor(pg);
+		pv.getGradeProfessors().add(pg);
 		em.persist(pv);
-		pg.setProfessor(p);
+		em.flush();
+		pg.getProfessors().add(p);
 		em.merge(pg);
 		return pv;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ProfessorGrade> getallgradbyprof(int idProfessor) {
-		Query q = em.createQuery("select pg from ProfessorGrade pg "
-				+ "where pg.professor.idProfessor=:idp");
-		q.setParameter("idp", idProfessor);
-		return q.getResultList();
 	}
 
 	@Override
@@ -196,11 +197,60 @@ public class DaoProfessorImpl implements IDaoProfessor {
 		return p;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Professor getProfByMatricule(String matricule) {
 		Query q = em.createQuery("select p from Professor p where p.matricule = :m");
 		q.setParameter("m", matricule);
-		return (Professor) q.getSingleResult();
+		return (Professor) q.getResultList().stream().findFirst().orElse(null);
 	}
+
+	@Override
+	public Ville addVille(Ville v) {
+		em.persist(v);
+		em.flush();
+		return v;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ville> getAllVille() {
+		Query q = em.createQuery("select v from Ville v");
+		return q.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ville> getAllVilleByPays(Pays p) {
+		Query q = em.createQuery("select v from Ville v where v.pays = :pays");
+		q.setParameter("pays", p.getName());
+		return q.getResultList();
+	}
+
+	@Override
+	public Pays addPays(Pays p) {
+		em.persist(p);
+		em.flush();
+		return p;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pays> getAllPays() {
+		Query q = em.createQuery("select p from Pays p");
+		return q.getResultList();
+	}
+
+	@Override
+	public Ville getVille(int idVille) {
+		return em.find(Ville.class, idVille);
+	}
+
+	@Override
+	public Pays getPays(String name) {
+		return em.find(Pays.class, name);
+	}
+
+	
 
 }

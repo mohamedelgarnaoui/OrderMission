@@ -1,11 +1,12 @@
 package com.order.mission.entities;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Transport {
@@ -15,9 +16,9 @@ public class Transport {
 	private int idTransport;
 	private String typeTransport;
 	private String comment;
-	@ManyToOne
-	@JoinColumn(name = "id_mission")
-	private Mission mission;
+	
+	@ManyToMany(mappedBy = "transport")
+	private Collection<Mission> missions;
 
 	public Transport() {
 		super();
@@ -61,12 +62,12 @@ public class Transport {
 		this.comment = comment;
 	}
 
-	public Mission getMission() {
-		return mission;
+	public Collection<Mission> getMissions() {
+		return missions;
 	}
 
-	public void setMission(Mission mission) {
-		this.mission = mission;
+	public void setMissions(Collection<Mission> missions) {
+		this.missions = missions;
 	}
 
 }

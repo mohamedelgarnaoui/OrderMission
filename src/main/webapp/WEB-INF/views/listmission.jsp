@@ -9,23 +9,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OrderMission | Profil</title>
-<!-- Tell the browser to be responsive to screen width -->
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
-<!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-<!-- DataTables -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/AdminLTE.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/skins/skin-blue.min.css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OrderMission | Profil</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+		name="viewport">
+	<!-- Bootstrap 3.3.6 -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- DataTables -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/skins/skin-blue.min.css">
+	
+	<!-- jQuery 2.2.3 -->
+	<script src="${pageContext.request.contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -126,8 +131,8 @@
 				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
 						<li class="header">MAIN NAVIGATION</li>
-						<li class="active treeview"><a href="./index"> <i
-								class="fa fa-dashboard"></i> <span>tableau de bord</span>
+						<li><a href="./index"> <i
+								class="fa fa-dashboard"></i> <span>Tableau de Bord</span>
 						</a></li>
 						<sec:authorize access="hasAuthority('ADMIN')">
 							<li>
@@ -144,17 +149,39 @@
 								</ul>
 							</li>
 						</sec:authorize>
-						<li><a href="#"> <i class="fa fa-th"></i> <span>
-									Missions</span> <span class="pull-right-container"> <i
-									class="fa fa-angle-left pull-right"></i>
-							</span>
+						<li class="active treeview">
+							<a href="#"> <i class="fa fa-th"></i> 
+								<span>Missions</span> 
+								<span class="pull-right-container"> 
+									<i class="fa fa-angle-left pull-right"></i>
+								</span>
 						</a>
-							<ul class="treeview-menu">
-								<li><a href="./mission"><i class="fa fa-circle-o"></i>
+							<ul class="active treeview-menu">
+								<li class="active"><a href="./mission"><i class="fa fa-circle-o"></i>
 										Tous les missions</a></li>
 								<li><a href="./addMission"><i class="fa fa-circle-o"></i> Ajouter
 										mission</a></li>
 							</ul></li>
+							<!--<sec:authorize access="hasAuthority('ADMIN')">
+								<li class="treeview">
+									<a href="#"> <i class="fa fa-table"></i>
+											<span> Département</span> <span class="pull-right-container">
+												<i class="fa fa-angle-left pull-right"></i>
+										</span>
+									</a>
+									<ul class="treeview-menu">
+										<li><a href="data3.html"><i class="fa fa-circle-o"></i>Toutes
+												les départements</a></li>
+										<li><a href="#"><i class="fa fa-circle-o"></i>Ajouter
+												département</a></li>
+									</ul>
+								</li>
+							</sec:authorize>
+						<li><a href="calendar.html"> <i class="fa fa-calendar"></i>
+								<span> Calendrier</span> <span class="pull-right-container">
+									<small class="label pull-right bg-red">3</small>
+							</span>
+						</a></li>-->
 					</ul>
 			</section>
 			<!-- /.sidebar -->
@@ -195,46 +222,46 @@
 											<th>Date d'expiration</th>
 											<th>Professeur</th>
 											<th>Status</th>
-											<th style='width: 10%;'>Actions</th>
+											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${missionModel.missions}" var="m">	
-											<tr>
-												<td>${m.subject}</td>
-												<td>${m.destination.name}</td>
-												<td>${m.departureTime}</td>
-												<td>${m.returnTime}</td>
-												<td>${m.expiryDate}</td>
-												<td>${m.professor.matricule}</td>
-												<td>${m.state.name}</td>
-												<td>
-													<div class="btn-group">
-														<button type="button" class="btn btn-default">Action</button>
-														<button type="button"
-															class="btn btn-default dropdown-toggle"
-															data-toggle="dropdown">
-															<span class="caret"></span> <span class="sr-only">Toggle
-																Dropdown</span>
-														</button>
-														<ul class="dropdown-menu" role="menu">
-															<li><a href="./downloadMission/${m.idMission}">Télecharger</a></li>
-															<li><a href="./updateMission?idm=${m.idMission}">Modifier</a></li>
-															<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li><a href="#" data-href="./deleteMission/${m.idMission}" data-toggle="modal" data-target="#confirm-delete">Supprimer</a></li></sec:authorize>
-															<li class="divider"></li>
-															<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')">
-																<li style="display: ${m.state.state.state == null ? 'none' : ''}">
-																	<a href="./advanceMission/${m.idMission}">${m.state.state.action}</a>
-																</li>
-															</sec:authorize>
-															<li style="display: ${m.state.state.state == null ? '' : 'none'}">
-																<a href="./printMission/${m.idMission}">${m.state.state.action}</a>
+									<c:forEach items="${missionModel.missions}" var="m">	
+										<tr>
+											<td>${m.subject}</td>
+											<td>${m.destination.name}</td>
+											<td>${m.departureTime}</td>
+											<td>${m.returnTime}</td>
+											<td>${m.expiryDate}</td>
+											<td>${m.professor.matricule}</td>
+											<td>${m.state.name}</td>
+											<td>
+												<div class="btn-group">
+													<button type="button" class="btn btn-default">Action</button>
+													<button type="button"
+														class="btn btn-default dropdown-toggle"
+														data-toggle="dropdown">
+														<span class="caret"></span> <span class="sr-only">Toggle
+															Dropdown</span>
+													</button>
+													<ul class="dropdown-menu" role="menu">
+														<li><a href="./downloadMission/${m.idMission}">Télecharger</a></li>
+														<li><a href="./updateMission?idm=${m.idMission}">Modifier</a></li>
+														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li><a href="#" data-href="./deleteMission/${m.idMission}" data-toggle="modal" data-target="#confirm-delete">Supprimer</a></li></sec:authorize>
+														<li class="divider"></li>
+														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')">
+															<li style="display: ${m.state.state.state == null ? 'none' : ''}">
+																<a href="./advanceMission/${m.idMission}">${m.state.state.action}</a>
 															</li>
-															<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li style="display: ${m.state.idState == 5 ? 'none' : ''}"><a data-id="${m.idMission}" title="Rejeter" class="open-rejeterDialog">Rejeter</a></li></sec:authorize>
-														</ul>
-													</div>
-												</td>
-											</tr>
+														</sec:authorize>
+														<li style="display: ${m.state.state.state == null ? '' : 'none'}">
+															<a href="./printMission/${m.idMission}">${m.state.state.action}</a>
+														</li>
+														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li style="display: ${m.state.idState == 5 ? 'none' : ''}"><a data-id="${m.idMission}" title="Rejeter" class="open-rejeterDialog">Rejeter</a></li></sec:authorize>
+													</ul>
+												</div>
+											</td>
+										</tr>
 										</c:forEach>
 									</tbody>
 									<tfoot>
@@ -261,6 +288,8 @@
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
+		
+		
 		<div id="rejeterDialog" class="modal fade" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
@@ -334,10 +363,6 @@
 
 	<!-- REQUIRED JS SCRIPTS -->
 
-	<!-- jQuery 2.2.3 -->
-	<script src="${pageContext.request.contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
-	<!-- Bootstrap 3.3.6 -->
-	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/dist/js/app.min.js"></script>
 	<!-- FastClick -->
 	<script src="${pageContext.request.contextPath}/resources/plugins/fastclick/fastclick.js"></script>

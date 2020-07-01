@@ -32,81 +32,93 @@
   </div>
   <div class="register-box-body">
     <p class="login-box-msg">Professeur inscription</p>
-    <form action="starter.html" method="post">
+    <f:form  modelAttribute="userForm" method="post">
 		<spring:bind path="lastName">
 			<div class="form-group has-feedback">
 				<f:input type="text" class="form-control" path="lastName" required="required" placeholder="Votre Nom"></f:input>
 				<span class="glyphicon glyphicon-user form-control-feedback"></span>
+				<f:errors path="lastName"></f:errors>
 			</div>
 		</spring:bind>
 		<spring:bind path="firstName">
 			<div class="form-group has-feedback">
-		        <input type="text" class="form-control" name="firstName" required="required" placeholder="Votre PrÃ©nom">
+		        <f:input type="text" class="form-control" path="firstName" required="required" placeholder="Votre Prénom"></f:input>
 		        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+		        <f:errors path="firstName"></f:errors>
 	        </div>
      	 </spring:bind>
-     	 <spring:bind path="usrename">
+     	 <spring:bind path="username">
 			  <div class="form-group has-feedback">
-		        <input type="text" class="form-control" name="usrename" required="required" placeholder=" Votre Matricule">
+		        <f:input type="text" class="form-control" path="username" required="required" placeholder=" Votre Matricule"></f:input>
 		        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+		        <f:errors path="username"></f:errors>
 		      </div>
       	</spring:bind>
-	      <spring:bind path="email">
-		      <div class="form-group has-feedback">
-		        <input type="email" class="form-control" name="email" required="required" placeholder="Votre Email">
-		        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-		      </div>
-	      </spring:bind>
+	    <spring:bind path="email">
+			 <div class="form-group has-feedback">
+			   <f:input type="email" class="form-control" path="email" required="required" placeholder="Votre Email"></f:input>
+			   <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			   <f:errors path="email"></f:errors>
+			 </div>
+	    </spring:bind>
       <spring:bind path="password">
 	      <div class="form-group has-feedback">
-	        <input type="password" class="form-control" name="password" required="required" placeholder="Votre mot de passe">
+	        <f:input type="password" class="form-control" path="password" required="required" placeholder="Votre mot de passe"></f:input>
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+	        <f:errors path="password"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="passwordConfirm">
 	      <div class="form-group has-feedback">
-	        <input type="password" class="form-control" name="passwordConfirm" placeholder="Confirmer le mot de passe">
+	        <f:input type="password" class="form-control" path="passwordConfirm" placeholder="Confirmer le mot de passe"></f:input>
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+	        <f:errors path="passwordConfirm"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="birthDate">
 		  <div class="form-group has-feedback">
-	        <input type="date" class="form-control" name="birthDate" required="required" placeholder="Date de naissance" title="Votre Date de naissance">
+	        <f:input type="date" class="form-control" path="birthDate" required="required" placeholder="Date de naissance" title="Votre Date de naissance"></f:input>
 	        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+	        <f:errors path="birthDate"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="photo">
 		  <div class="form-group has-feedback">
-	        <input type="file" class="form-control" name="photo" required="required" placeholder="Photo" title="Votre Photo">
+	        <f:input type="file" class="form-control" path="photo" required="required" placeholder="Photo" title="Votre Photo"></f:input>
 	        <span class="glyphicon glyphicon-camera form-control-feedback"></span>
+	        <f:errors path="photo"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="numCIN">
 		  <div class="form-group has-feedback">
-	        <input type="text" class="form-control" name="numCIN" required="required" placeholder="Numéro CIN" title="Votre numéro CIN">
+	        <f:input type="text" class="form-control" path="numCIN" required="required" placeholder="Numéro CIN" title="Votre numéro CIN"></f:input>
 	        <span class="glyphicon glyphicon-paperclip form-control-feedback"></span>
+	        <f:errors path="numCIN"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="departement">
 		  <div class="form-group has-feedback">
-	        <select class="form-control" name="departement" required="required" >
-				<option value="" selected >Votre departement</option>
-				<option value="Informatique">Informatique</option>
-				<option value="Informatique">Physique</option>
-			</select>
+	        <f:select class="form-control" path="departement" required="required" >
+				<f:option value="" selected="selected" >Votre departement</f:option>
+				<f:option value="Informatique">Informatique</f:option>
+				<f:option value="Informatique">Physique</f:option>
+			</f:select>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+			<f:errors path="departement"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="phone">
 		  <div class="form-group has-feedback">
-	        <input type="text" class="form-control" name="phone" required="required" placeholder="Phone">
+	        <f:input type="text" class="form-control" path="phone" required="required" placeholder="Phone"></f:input>
 	        <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
+	        <f:errors path="phone"></f:errors>
 	      </div>
       </spring:bind>
       <spring:bind path="adresses">
 		  <div class="form-group has-feedback">
-	        <textarea rows="2" class="form-control" name="adresses" required="required" placeholder="Adresse"></textarea>
+	        <f:textarea rows="2" class="form-control" path="adresses" required="required" placeholder="Adresse"></f:textarea>
 	        <span class="glyphicon glyphicon-map-marker form-control-feedback"></span>
+	        <f:errors path="adresses"></f:errors>
 	      </div>
       </spring:bind>
       <div class="row">
@@ -123,7 +135,7 @@
         </div>
         <!-- /.col -->
       </div>
-    </form>
+    </f:form>
     <a href="${contextPath}/login" class="text-center">J'ai dèja un compte</a>
   </div>
   <!-- /.form-box -->

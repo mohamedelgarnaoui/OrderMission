@@ -17,6 +17,13 @@ public interface IDaoMission {
 	public Mission updateMission(Mission m);
 	public Mission getMission(int idMission);
 	public List<Mission> getAllMission();
+	
+	public List<Mission> getAllMissionByDepByState(int idDep, int idState);
+	public List<Mission> getAllMissionByProfByState(int idProf, int idState);
+	public List<Mission> getAllMissionByState(int idState);
+
+	public List<Mission> getAllMissionByProf(int idProfessor);
+
 
 	//DocumentType
 	public DocumentType AddDocumentType(DocumentType dt);
@@ -53,18 +60,13 @@ public interface IDaoMission {
 	public State getState(int idState);
 	public List<State> getAllState();
 	
-	//getAllmisssionbydepartement(d)
-	public Mission getAllMisssionByDepartement(int idDep);
+	public List<Mission> getAllMisssionByDepartement(int idDep);
 	
-	//getalltransportbymission
 	public List<Transport> getAllTransportByMission(int idMission);
 	
-	//getstatbymission
 	public State getStatByMission(int idMission);
 	
-	//get detailbymission
 	public DetailMission detailmissionByMission(int idMission);
 	
-	//getjustificationbymission
-	public JustificationDocument getJustificationDocByMission(int idMission);
+	public List<JustificationDocument> getJustificationDocByMission(int idMission);
 }

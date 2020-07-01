@@ -31,10 +31,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 		
-		List<Privileges> p = s.getallpreviligebyprof(prof.getIdProfessor()); 
+		List<Privileges> p = s.getAllPreviligeByProf(prof.getIdProfessor()); 
 		
 		for (Privileges privileges :p) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(privileges.getName()));
+			System.out.println(new SimpleGrantedAuthority(privileges.getName()).toString());
 		} 
 
 		return new org.springframework.security.core.userdetails.User(prof.getMatricule(), prof.getPassword(), grantedAuthorities);

@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -45,7 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="./index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>O</b>M</span>
       <!-- logo for regular state and mobile devices -->
@@ -66,17 +67,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Mohamed Elgarnaoui</span>
+              <img src="${pageContext.request.contextPath}/resources/images/${missionModel.image}" class="user-image" alt="User Image">
+              <span class="hidden-xs">${missionModel.prof.firstName} ${missionModel.prof.lastName}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="${pageContext.request.contextPath}/resources/images/${missionModel.image}" class="img-circle" alt="User Image">
 
                 <p>
-                 Mohamed Elgarnaoui - Java Professor
-                  <small>Membre depuis 06/2020</small>
+                 ${missionModel.prof.firstName} ${missionModel.prof.lastName} <br>
+                  ${missionModel.prof.profession}
+                  <small>Membre depuis  ${missionModel.prof.dateCreation}</small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -85,7 +87,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+	                <form id="logoutForm" method="POST" action="./login?logout">
+			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			        </form>
+                  	<a href="#" onclick="document.forms['logoutForm'].submit()" class="btn btn-default btn-flat">Se deconnecté</a>
                 </div>
               </li>
             </ul>
@@ -103,12 +108,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="${pageContext.request.contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="${pageContext.request.contextPath}/resources/images/${missionModel.image}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Mohamed Elgarnaoui</p>
+          <p>${missionModel.prof.firstName} ${missionModel.prof.lastName}</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> ConnectÃ©</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> Connecté</a>
         </div>
       </div>
 
@@ -126,27 +131,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li>
-          <a href="starter.html">
-            <i class="fa fa-dashboard"></i> <span>tableau de bord</span>
+          <a href="./index">
+            <i class="fa fa-dashboard"></i> <span>Tableau de Bord</span>
           </a>
           
         </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-th"></i> <span> Professeurs</span>
-            <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="data.html"><i class="fa fa-circle-o"></i> Tous les Professeurs</a></li>
-            <li><a href="ajout_produit.html"><i class="fa fa-circle-o"></i> Ajouter professeur</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Modifier professeur</a></li>
-          </ul>
-        </li>
+        <sec:authorize access="hasAuthority('ADMIN')">
+	        <li>
+	          <a href="#">
+	            <i class="fa fa-th"></i> <span>Professeurs</span>
+	            <span class="pull-right-container">
+	            <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+	          <ul class="treeview-menu">
+	            <li><a href="./professor"><i class="fa fa-circle-o"></i> Tous les Professeurs</a></li>
+	            <li><a href="./addProfessor"><i class="fa fa-circle-o"></i> Ajouter professeur</a></li>
+	          </ul>
+	        </li>
+        </sec:authorize>
         <li class="active treeview">
           <a href="#">
             <i class="fa fa-th"></i> <span> Missions</span>
@@ -155,23 +160,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="active treeview-menu">
-		  <li class="active"><a href="data2.html"><i class="fa fa-circle-o"></i> Tous les missions</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ajouter mission</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Modifier mission</a></li>
+			<li ><a href="./mission"><i class="fa fa-circle-o"></i>Tous les missions</a></li>
+			<li class="active"><a href="./addMission"><i class="fa fa-circle-o"></i>Ajouter mission</a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span> DÃ©partement</span>
-            <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="data3.html"><i class="fa fa-circle-o"></i>Toutes les dÃ©partements</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>Ajouter dÃ©partement</a></li>
-          </ul>
-        </li>
+        <!--<sec:authorize access="hasAuthority('ADMIN')">
+	        <li class="treeview">
+	          <a href="#">
+	            <i class="fa fa-table"></i> <span> Département</span>
+	            <span class="pull-right-container">
+	            <i class="fa fa-angle-left pull-right"></i>
+	            </span>
+	          </a>
+	          <ul class="treeview-menu">
+	            <li><a href="data3.html"><i class="fa fa-circle-o"></i>Toutes les départements</a></li>
+	            <li><a href="#"><i class="fa fa-circle-o"></i>Ajouter département</a></li>
+	          </ul>
+	        </li>
+        </sec:authorize>
         <li>
           <a href="calendar.html">
             <i class="fa fa-calendar"></i> <span> Calendrier</span>
@@ -179,7 +185,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <small class="label pull-right bg-red">3</small>
             </span>
           </a>
-        </li>
+        </li>-->
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -212,88 +218,110 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
-         <f:form modelAttribute="missionM" action="addmiss" method="post">
-          <div class="row">
-         
-            <div class="col-md-6">
-				<!-- text input -->
-                <div class="form-group">
-                  <label>Sujet de la mission :</label>
-                  <f:input type="text" path="subject" class="form-control" placeholder="Enter ..."></f:input>
-                </div>
-              <div class="input-group">
-                <label>Destination :</label>
-                <f:select class="form-control select2" path="destination" style="width: 100%;">
-                  <f:option selected="selected" value="" >selectionner votre destination</f:option>
-                </f:select>
-				<br/>
-				 <span class="input-group-btn">
+        <f:form modelAttribute="missionModel" action="./addMission?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
+	        <div class="box-body">
+	          <div class="row">
+	            <div class="col-md-6">
+					<!-- text input -->
+	                <div class="form-group" style="display: ${!missionModel.isupdate ? 'none' : ''}">
+	                  <label>Id mission :</label>
+	                  <f:input type="text" path="idMission" required="required" class="form-control" disabled="true"></f:input>
+	                </div>
+	                <div class="form-group">
+	                  <label>Sujet de la mission :</label>
+	                  <f:input type="text" path="subject" required="required" class="form-control" placeholder="Entrer le sujet de votre Mission"></f:input>
+	                </div>
+	              <div class="input-group ${messagev != null ? 'has-success' : ''}">
+	                <label>Destination :</label>
+	                <f:select class="form-control select2" path="destination" required="required" style="width: 100%;">
+	                  <f:option selected="selected" value="" >selectionner votre destination</f:option>
+	                  <c:forEach items="${missionModel.villes}" var="v">
+							<f:option value="${v.idVille}">${v.name}</f:option>
+					  </c:forEach>
+	                </f:select>
+	                <span>${messagev}</span>
+					<br/>
 					<p style="height: 15px;"></p>
-					<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalVille">Ajouter une !</button>
-				  </span>
-              </div>
-			  <div class="input-group">
-                <label>DÃ©partement :</label>
-                <f:select class="form-control select2"  path="" style="width: 100%;">
-                  <f:option selected="selected" value="">selectionner votre DÃ©partement</f:option>
-                </f:select>
-				<br/>
-				 <span class="input-group-btn">
+					 <span class="input-group-btn">
+						<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalVille">Ajouter une !</button>
+					  </span>					  
+	              </div>
+				  <div class="input-group ${messaged != null ? 'has-success' : ''}">
+	                <label>Département :</label>
+	                <f:select class="form-control select2"  path="departement" required="required" style="width: 100%;">
+						<f:option selected="selected" value="">selectionner votre Département</f:option>
+						<c:forEach items="${missionModel.departements}" var="dep">
+							<f:option value="${dep.idDep}">${dep.name}</f:option>
+						</c:forEach>
+	                </f:select>
+					<br/>
 					<p style="height: 15px;"></p>
-					<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalDep">Ajouter une !</button>
-				  </span>
-              </div>
-			  <div class="form-group">
-                <label>Moyen de transport :</label>
-                <f:select class="form-control select2" multiple="multiple"  path="" data-placeholder="choisissez vos moyens de transport" style="width: 100%;">
-                  <f:option value="">Voiture personnel</f:option>
-                </f:select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-			  <!-- Date and time range -->
-              <div class="form-group">
-                <label>Date d'aller et de retour :</label>
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                  </div>
-                  <f:input type="text"  path="" class="form-control pull-right" id="reservationtime"></f:input>
-                </div>
-                <!-- /.input group -->
-              </div>
-			   <!-- Date -->
-              <div class="form-group">
-                <label>Date d'expiration :</label>
-                <div class="input-group date">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <f:input type="text"  path="" class="form-control pull-right" id="datepicker"></f:input>
-                </div>
-                <!-- /.input group -->
-              </div>
-			   <div class="form-group">
-                  <label for="exampleInputFile">Votre Justification :</label>
-                  <f:input type="file"  path="" id="exampleInputFile"></f:input>
-
-                  <p class="help-block"></p>
-               </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
+					 <span class="input-group-btn">
+						<button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#myModalDep">Ajouter une !</button>
+					  </span>
+					  <span>${messaged}</span>
+	              </div>
+				  <div class="form-group">
+	                <label>Moyen de transport :</label>
+	                <f:select class="form-control select2" multiple="multiple"  path="moyenTrans" required="required" data-placeholder="choisissez vos moyens de transport" style="width: 100%;">
+	                  <f:option value="">choisissez vos moyens de transport</f:option>
+	                  <c:forEach items="${missionModel.transports}" var="trs">
+							<f:option value="${trs.idTransport}">${trs.typeTransport}</f:option>
+						</c:forEach>
+	                </f:select>
+	              </div>
+	              <!-- /.form-group -->
+	            </div>
+	            <!-- /.col -->
+	            <div class="col-md-6">
+				  <!-- Date and time range -->
+	              <div class="form-group">
+	                <label>Date d'aller et de retour :</label>
+	                <div class="input-group">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-clock-o"></i>
+	                  </div>
+	                  <f:input type="text"  path="departureTime" required="required" class="form-control pull-right" id="reservationtime"></f:input>
+	                </div>
+	                <!-- /.input group -->
+	              </div>
+				   <!-- Date -->
+	              <div class="form-group">
+	                <label>Date d'expiration :</label>
+	                <div class="input-group date">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-calendar"></i>
+	                  </div>
+	                  <f:input type="text" path="expiryDate" class="form-control pull-right" required="required" id="datepicker"></f:input>
+	                </div>
+	                <!-- /.input group -->
+	              </div>
+				   <div class="form-group ${message != null ? 'has-error' : ''}">
+	                  <label for="exampleInputFile">Votre Justification :</label>
+	                  <input type="file" required="required" name="justif" id="exampleInputFile"></input>
+	                  <p class="help-block">
+	                  <span>${message}</span>
+	                  </p>
+	               </div>
+	               <div class="form-group">
+	                	<label>Commentaire :</label>
+	                  	<f:textarea path="comment" cols="2" class="form-control" placeholder="Entrer un commentaire"></f:textarea>
+	               </div>
+	               
+	               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	              <!-- /.form-group -->
+	            </div>
+	            <!-- /.col -->
+	          </div>
+	          <!-- /.row -->
+	      
+	        </div>
+	        <!-- /.box-body -->
+	        <div class="box-footer">
+				<button type="reset" class="btn btn-default">Réinistialiser</button>
+	            <button type="submit" class="btn btn-primary">Ajouter mission</button>
+	        </div>
         </f:form>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-			<button type="reset" class="btn btn-default">RÃ©inistialiser</button>
-            <button type="submit" class="btn btn-primary">Ajouter mission</button>
-        </div>
       
       </div>
       
@@ -304,18 +332,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter DÃ©partement</h4>
+				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter Département</h4>
 			  </div>
-			  <f:form>
+			  <f:form modelAttribute="missionModel" action="./addDepartement" method="post">
 				  <div class="modal-body">
 					<div class="form-group">
 					  <label>Nom du departement :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom dÃ¨partement"></f:input>
+					  <f:input type="text"  path="departementName" class="form-control" placeholder="Entrer nom département"></f:input>
+					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					</div>
 				  </div>
 				  <div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
 				  </div>
 			  </f:form>
 			</div><!-- /.modal-content -->
@@ -326,24 +355,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter DÃ©partement</h4>
+				<h4 class="modal-title text-center" id="gridSystemModalLabel">Ajouter Ville</h4>
 			  </div>
-			  <f:form>
+			  <f:form modelAttribute="missionModel" action="./addVille" method="post">
 				  <div class="modal-body">
 					<div class="form-group">
 					  <label>Nom du ville :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom du ville"></f:input>
+					  <f:input type="text"  path="nameVille" class="form-control" placeholder="Entrer nom du ville"></f:input>
+					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					</div>
 					<div class="form-group">
 					  <label>A quel pays appartient :</label>
-					  <f:input type="text"  path="" class="form-control" placeholder="Entrer nom du pays"></f:input>
+					  <f:input type="text"  path="pays" class="form-control" placeholder="Entrer nom du pays"></f:input>
 					</div>
 				  </div>
+				  <div class="modal-footer">
+					<button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
+				  </div>
 			  </f:form>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
-			  </div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -400,16 +430,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     $(".select2").select2();
 
     //Datemask dd/mm/yyyy
-    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    $("#datemask").inputmask("dd/MM/yyyy", {"placeholder": "dd/MM/yyyy"});
     //Datemask2 mm/dd/yyyy
-    $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+    $("#datemask2").inputmask("dd/MM/yyyy", {"placeholder": "dd/MM/yyyy"});
     //Money Euro
     $("[data-mask]").inputmask();
 
     //Date range picker
     $('#reservation').daterangepicker();
     //Date range picker with time picker
-    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+    $('#reservationtime').daterangepicker({autoApply: true, timePicker: true, timePickerIncrement: 30, format: 'dd/MM/yyyy hh:mm'});
     //Date range as a button
     $('#daterange-btn').daterangepicker(
         {

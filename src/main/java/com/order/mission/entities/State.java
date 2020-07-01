@@ -16,8 +16,8 @@ public class State {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idState;
 	private String name;
-	private Date startDate;
-	private Date endDate;
+	private String action;
+	private int time;
 	@OneToMany(mappedBy = "state")
 	private Collection<Mission> mission;
 	@OneToOne
@@ -28,19 +28,18 @@ public class State {
 		super();
 	}
 
-	public State(int idState, String name, Date startDate, Date endDate) {
+	public State(int idState, String name, int time) {
 		super();
 		this.idState = idState;
 		this.name = name;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.time = time;
 	}
 
-	public State(String name, Date startDate, Date endDate) {
+	public State(String name, String action, int time) {
 		super();
 		this.name = name;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.action = action;
+		this.time = time;
 	}
 
 	public int getIdState() {
@@ -59,20 +58,20 @@ public class State {
 		this.name = name;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public int getTime() {
+		return time;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setTime(int time) {
+		this.time = time;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public String getAction() {
+		return action;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 	public Collection<Mission> getMission() {

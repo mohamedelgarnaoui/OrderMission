@@ -6,8 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class ProfessorGrade {
@@ -16,19 +16,19 @@ public class ProfessorGrade {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idGrade;
 	private String grade;
-	@ManyToOne
-	@JoinColumn(name = "id_professor")
-	private Professor professor;
-	@OneToMany(mappedBy = "gradeProfessor")
+	@ManyToMany(mappedBy = "professorGrade")
+	private Collection<Professor> professors;
+	@ManyToMany()
+	@JoinTable(name="priv_grade", joinColumns=@JoinColumn(name="idGrade"),
+	inverseJoinColumns=@JoinColumn(name="idPriv"))
 	private Collection<Privileges> privileges;
 
 	public ProfessorGrade() {
 
 	}
 
-	public ProfessorGrade(int idGrade, String grade) {
+	public ProfessorGrade(String grade) {
 		super();
-		this.idGrade = idGrade;
 		this.grade = grade;
 	}
 
@@ -48,12 +48,12 @@ public class ProfessorGrade {
 		this.grade = grade;
 	}
 
-	public Professor getProfessor() {
-		return professor;
+	public Collection<Professor> getProfessors() {
+		return professors;
 	}
 
-	public void setProfessor(Professor professor) {
-		this.professor = professor;
+	public void setProfessor(Collection<Professor> professors) {
+		this.professors = professors;
 	}
 
 	public Collection<Privileges> getPrivileges() {

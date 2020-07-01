@@ -1,12 +1,13 @@
 package com.order.mission.entities;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Privileges {
@@ -16,9 +17,8 @@ public class Privileges {
 	private int idPriv;
 	@Column(nullable = false, unique = true)
 	private String name;
-	@ManyToOne
-	@JoinColumn(name = "id_grade")
-	private ProfessorGrade gradeProfessor;
+	@ManyToMany(mappedBy = "privileges")
+	private Collection<ProfessorGrade> gradeProfessors;
 	
 	public Privileges() {
 		super();
@@ -50,12 +50,12 @@ public class Privileges {
 		this.name = name;
 	}
 	
-	public ProfessorGrade getGradeProfessor() {
-		return gradeProfessor;
+	public Collection<ProfessorGrade>  getGradeProfessors() {
+		return gradeProfessors;
 	}
 	
-	public void setGradeProfessor(ProfessorGrade gradeProfessor) {
-		this.gradeProfessor = gradeProfessor;
+	public void setGradeProfessors(Collection<ProfessorGrade> gradeProfessors) {
+		this.gradeProfessors = gradeProfessors;
 	}
 
 }

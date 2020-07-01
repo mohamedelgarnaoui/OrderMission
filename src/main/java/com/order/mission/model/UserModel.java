@@ -1,6 +1,9 @@
 package com.order.mission.model;
 
-import java.util.Date;
+import java.util.List;
+
+import com.order.mission.entities.Professor;
+import com.order.mission.entities.ProfessorGrade;
 
 public class UserModel {
 	private String email;
@@ -9,7 +12,7 @@ public class UserModel {
 	private String passwordConfirm;
 	private String lastName;
 	private String firstName;
-	private Date birthDate;
+	private String birthDate;
 	private String adresses;
 	private String city;
 	private String phone;
@@ -19,7 +22,18 @@ public class UserModel {
 	private String photo;
 	private String CINPrinted;
 	private String status;
+	private String departement;
+	private String profession;
+	private String grade;
+	private String image;
 	
+	private String action;
+	
+	private Professor prof;
+	private List<Professor> professors;
+	private List<ProfessorGrade> grades;
+
+
 	public UserModel() {
 		super();
 	}
@@ -72,11 +86,11 @@ public class UserModel {
 		this.firstName = firstName;
 	}
 
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -136,6 +150,14 @@ public class UserModel {
 		this.photo = photo;
 	}
 
+	public String getDepartement() {
+		return departement;
+	}
+
+	public void setDepartement(String departement) {
+		this.departement = departement;
+	}
+
 	public String getCINPrinted() {
 		return CINPrinted;
 	}
@@ -150,6 +172,62 @@ public class UserModel {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public Professor getProf() {
+		return prof;
+	}
+
+	public void setProf(Professor prof) {
+		this.prof = prof;
+	}
+
+	public List<Professor> getProfessors() {
+		return professors;
+	}
+
+	public void setProfessors(List<Professor> professors) {
+		this.professors = professors;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+	
+	public List<ProfessorGrade> getGrades() {
+		return grades;
+	}
+
+	public void setGrades(List<ProfessorGrade> grades) {
+		this.grades = grades;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

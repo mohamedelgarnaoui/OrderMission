@@ -3,10 +3,11 @@ package com.order.mission.dao;
 import java.util.List;
 
 import com.order.mission.entities.Departement;
-import com.order.mission.entities.Mission;
+import com.order.mission.entities.Pays;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
+import com.order.mission.entities.Ville;
 
 public interface IDaoProfessor {
 
@@ -41,18 +42,21 @@ public interface IDaoProfessor {
 	public Departement getDepartement(int idDepartement);
 	public List<Departement> getAllDepartement();
 	
-	//getAllmissionByProf(p)
-	public List<Mission> getAllMissionByProf(int idProfessor);
+	//ville
+	public Ville addVille(Ville v);
+	public Ville getVille(int idVille);
+	public List<Ville> getAllVille();
+	public List<Ville> getAllVilleByPays(Pays p);
+	//pays
+	public Pays addPays(Pays p);
+	public Pays getPays(String name);
+	public List<Pays> getAllPays();
 	
-	//getallpreviligebyprof(p)
-	public List<Privileges> getallpreviligebyprof(int idProfessor);
+	public List<Privileges> getAllPreviligeByGrade(int idGrade);
 	
-	//givProfPrivileg(prv)
+	public List<ProfessorGrade> getAllGradeByProf(int idProf);
+	
 	public Privileges givProfPrivileg(Privileges pv,Professor p,ProfessorGrade pg);
 	
-	//getallgradbyprof
-	public List<ProfessorGrade> getallgradbyprof(int idProfessor);
-	
-	//upStatusProf
 	public Professor upStatusProf(Professor p);
 }

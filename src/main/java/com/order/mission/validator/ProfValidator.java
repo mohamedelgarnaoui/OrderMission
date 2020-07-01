@@ -24,16 +24,16 @@ public class ProfValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		UserModel user = (UserModel) target;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "matricule", "NotEmpty");
-        if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
-            errors.rejectValue("matricule", "Size.userForm.matricule");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
+        if (user.getUsername().length() < 4 || user.getUsername().length() > 32) {
+            errors.rejectValue("username", "Size.userForm.username");
         }
         if (sp.getProfByMatricule(user.getUsername()) != null) {
-            errors.rejectValue("matricule", "Duplicate.userForm.matricule");
+            errors.rejectValue("username", "Duplicate.userForm.username");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
 

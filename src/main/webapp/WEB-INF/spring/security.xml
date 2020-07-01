@@ -7,10 +7,17 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http auto-config="true">
-        <intercept-url pattern="/" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/index" access="hasRole('ROLE_USER')"/>
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
+        <intercept-url pattern="/index" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
+        <intercept-url pattern="/mission" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
+        <intercept-url pattern="/mission/*" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
+        <intercept-url pattern="/addMission" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
+        <intercept-url pattern="/professor" access="hasAnyAuthority('ADMIN','DEPCHEF')"/>
+        <intercept-url pattern="/addProfessor" access="hasAnyAuthority('ADMIN','DEPCHEF')"/>
+        
         <form-login login-page="/login" default-target-url="/index" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
+        
         <logout logout-success-url="/login?logout" />
     </http>
 
@@ -20,8 +27,10 @@
         </authentication-provider>
     </authentication-manager>
 
-    <beans:bean id="userDetailsServiceImpl" class="com.order.mission.security.UserDetailsServiceImpl"></beans:bean>
-
+    <beans:bean id="userDetailsServiceImpl" class="com.order.mission.security.UserDetailsServiceImpl"/>
+    
+    <beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+    
     <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <beans:constructor-arg name="strength" value="11"/>
     </beans:bean>

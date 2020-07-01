@@ -21,6 +21,13 @@ public class Ville {
 	public Ville() {
 		super();
 	}
+	
+	public Ville(String name, Pays p) {
+		super();
+		this.name = name;
+		this.pays = p;
+	}
+	
 	public Ville(int idVille, String name) {
 		super();
 		this.idVille = idVille;

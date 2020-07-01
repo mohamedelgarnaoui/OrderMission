@@ -12,22 +12,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OrderMission | Profil</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- DataTables -->
-  <link rel="stylesheet" href="${contextPath}/resources/plugins/datatables/dataTables.bootstrap.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="${contextPath}/resources/dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="${contextPath}/resources/dist/css/skins/skin-blue.min.css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OrderMission | Profil</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<!-- Bootstrap 3.3.6 -->
+	<link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	 <!-- daterange picker -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.css">
+	  <!-- bootstrap datepicker -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datepicker/datepicker3.css">
+	  <!-- iCheck for checkboxes and radio inputs -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/iCheck/all.css">
+	  <!-- Bootstrap Color Picker -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.css">
+	  <!-- Bootstrap time Picker -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.css">
+	  <!-- Select2 -->
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/select2/select2.min.css">
+	  <!-- DataTables -->
+	<link rel="stylesheet" href="${contextPath}/resources/plugins/datatables/dataTables.bootstrap.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="${contextPath}/resources/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="${contextPath}/resources/dist/css/skins/skin-blue.min.css">
+	<!-- jQuery 2.2.3 -->
+	<script src="${contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="${contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -36,7 +52,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="starter.html" class="logo">
+    <a href="./index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>O</b>M</span>
       <!-- logo for regular state and mobile devices -->
@@ -66,18 +82,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="${contextPath}/resources/images/${userForm.image}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Mohamed Elgarnaoui</span>
+              <span class="hidden-xs">${userForm.prof.firstName} ${userForm.prof.lastName}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="${contextPath}/resources/images/${userForm.image}" class="img-circle" alt="User Image">
 
                 <p>
-                 Mohamed Elgarnaoui - Java Professor
-                  <small>Membre depuis 06/2020</small>
+                 ${userForm.prof.firstName} ${userForm.prof.lastName} <br>${userForm.prof.profession} 
+				 <small>Membre depuis ${userForm.prof.dateCreation}</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -89,7 +105,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <form id="logoutForm" method="POST" action="./login?logout">
+			            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			        </form>
+                  	<a href="#" onclick="document.forms['logoutForm'].submit()" class="btn btn-default btn-flat">Se deconnectÈ</a>
                 </div>
               </li>
             </ul>
@@ -107,12 +126,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="${contextPath}/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="${contextPath}/resources/images/${userForm.image}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Mohamed Elgarnaoui</p>
+          <p>${userForm.prof.firstName} ${userForm.prof.lastName}</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Connect√©</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> ConnectÈ</a>
         </div>
       </div>
 
@@ -130,25 +149,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
-          <a href="starter.html">
+        <li class="treeview">
+          <a href="./index">
             <i class="fa fa-dashboard"></i> <span>tableau de bord</span>
           </a>
           
         </li>
-        <li>
-          <a href="#">
+        <li class="active treeview">
+          <a href="#" class="active treeview">
             <i class="fa fa-th"></i> <span> Professeurs</span>
             <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="data.html"><i class="fa fa-circle-o"></i> Tous les Professeurs</a></li>
-            <li><a href="ajout_produit.html"><i class="fa fa-circle-o"></i> Ajouter professeur</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Modifier professeur</a></li>
+          <ul class="active treeview-menu">
+            <li class="active"><a href="./professor"><i class="fa fa-circle-o"></i> Tous les Professeurs</a></li>
+            <li><a href="./addProfessor"><i class="fa fa-circle-o"></i> Ajouter professeur</a></li>
           </ul>
         </li>
         <li>
@@ -159,31 +176,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </span>
           </a>
           <ul class="treeview-menu">
-		  <li><a href="data2.html"><i class="fa fa-circle-o"></i> Tous les missions</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ajouter mission</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Modifier mission</a></li>
+		  <li><a href="./mission"><i class="fa fa-circle-o"></i> Tous les missions</a></li>
+            <li><a href="./addMission"><i class="fa fa-circle-o"></i> Ajouter mission</a></li>
           </ul>
         </li>
-        <li class="treeview">
+       <!-- <li class="treeview">
           <a href="#">
-            <i class="fa fa-table"></i> <span> D√©partement</span>
+            <i class="fa fa-table"></i> <span> DÈpartement</span>
             <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="data3.html"><i class="fa fa-circle-o"></i>Toutes les d√©partements</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>Ajouter d√©partement</a></li>
+            <li><a href="data3.html"><i class="fa fa-circle-o"></i>Toutes les dÈpartements</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>Ajouter dÈpartement</a></li>
           </ul>
         </li>
-        <li>
+          <li>
           <a href="calendar.html">
             <i class="fa fa-calendar"></i> <span> Calendrier</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-red">3</small>
             </span>
           </a>
-        </li>
+        </li>-->
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -219,140 +235,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <thead>
                 <tr>
                   <th>Nom</th>
-				  <th>Pr√©nom</th>
                   <th>Matricule</th>
+                  <th>Profession</th>
                   <th>Email</th>
-				  <th>t√©l</th>
+				  <th>TÈl</th>
 				  <th>Ville</th>
-				  <th>Departement</th>
+				  <th>DÈpartement</th>
 				  <th>Status</th>
-				  <th>Actions</th>
+				  <th style='width: 10%;'>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>KHTML</td>
-				  <td>DAWI</td>
-                  <td>Konqureror 3.1</td>
-                  <td>KDE 3.1</td>
-				  <td>PSP</td>
-                  <td>3.1</td>
-                  <td>C</td>
-				  <td><div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">60% Complete</span>
-                        </div>
-                      </div></td>
-				  <td><div class="btn-group">
-                  <button type="button" class="btn btn-default">Action</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div></td>
-                </tr>
-                <tr>
-                  <td>KHTML</td>
-				  <td>DAWI</td>
-                  <td>Konqureror 3.3</td>
-                  <td>KDE 3.3</td>
-                  <td>3.3</td>
-                  <td>A</td>
-				  <td>PSP</td>
-				  <td><div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">60% Complete</span>
-                        </div>
-                      </div></td>
-				  <td><div class="btn-group">
-                  <button type="button" class="btn btn-default">Action</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div></td>
-                </tr>
-                <tr>
-                  <td>KHTML</td>
-				  <td>DAWI</td>
-                  <td>Konqureror 3.5</td>
-                  <td>KDE 3.5</td>
-                  <td>3.5</td>
-                  <td>A</td>
-				  <td>PSP</td>
-				  <td><div class="progress xs">
-                        <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">60% Complete</span>
-                        </div>
-                      </div></td>
-				  <td><div class="btn-group">
-                  <button type="button" class="btn btn-default">Action</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div></td>
-                </tr>
-                <tr>
-                  <td>Tasman</td>
-				  <td>DAWI</td>
-                  <td>Internet Explorer 4.5</td>
-                  <td>Mac OS 8-9</td>
-                  <td>-</td>
-                  <td>X</td>
-				  <td>PSP</td>
-				  <td><div class="progress xs">
-                        <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">60% Complete</span>
-                        </div>
-                      </div></td>
-				  <td><div class="btn-group">
-                  <button type="button" class="btn btn-default">Action</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div></td>
-                </tr>
-                
+                <c:forEach items="${userForm.professors}" var="p">	
+	                <tr>			  
+						<td>${p.firstName} ${p.lastName}</td>
+						<td>${p.matricule}</td>
+						<td>${p.profession}</td>
+						<td>${p.email}</td>
+						<td>${p.phone}</td>
+						<td>${p.city}</td>
+						<td>${p.departement.name}</td>
+						<td>${p.status}</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">Action</button>
+								<button type="button"
+									class="btn btn-default dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span> <span class="sr-only">Toggle
+										Dropdown</span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#" data-href="./deleteProfessor/${p.idProfessor}" data-toggle="modal" data-target="#confirm-delete">Supprimer</a></li>
+									<li><a href="#">Modifier</a></li>
+									<li class="divider"></li>
+									<li><a data-id="${p.idProfessor}" title="Ajouter grade" class="open-gradeDialog">Attribuer grade</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</c:forEach>
                 </tbody>
                 <tfoot>
                 <tr>
 				  <th>Nom</th>
-				  <th>Pr√©nom</th>
                   <th>Matricule</th>
+                  <th>Profession</th>
                   <th>Email</th>
-				  <th>t√©l</th>
+				  <th>TÈl</th>
 				  <th>Ville</th>
-				  <th>Departement</th>
+				  <th>DÈpartement</th>
 				  <th>Status</th>
 				  <th>Actions</th>
                 </tr>
@@ -369,6 +301,70 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  
+  <div id="gradeDialog" class="modal fade" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+		  <div class="modal-header">
+	      		Rejection
+	      </div>
+	      <form action="./addGrade" method="post">
+		      <div class="modal-body">
+				<input type="hidden" name="idProf" id="idProf" value=""/>
+		        <div class="form-group">
+                	<label>Attribuer les grades ‡ ce professeur :</label>
+                </div>
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                  <div class="form-group">
+	                <label>Grade de professeur :</label>
+	                <select class="form-control select2" multiple="multiple" name="grade" required="required" data-placeholder="Choisissez les grades a donner a ce professeur :" style="width: 100%;">
+	                  <option value="">Choisissez les grades</option>
+	                  <c:forEach items="${userForm.grades}" var="g">
+							<option value="${g.idGrade}">${g.grade}</option>
+						</c:forEach>
+	                </select>
+	              </div>
+		      </div>
+		      <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+	                <button type="submit" class="btn btn-primary">Ajouter</button>
+	          </div>
+          </form>
+	    
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		
+		
+	 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	            	Supprission
+	            </div>
+	            <div class="modal-body">
+	                <p>Etes-vous sur vous voullez supprimer ce Professeur ??</p>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+	                <a class="btn btn-danger btn-ok">Supprimer</a>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<script type="text/javascript">
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+		    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+		
+		$(function(){
+		  $(".open-gradeDialog").click(function(){
+		     $('#idProfessor').val($(this).data('id'));
+		    $("#gradeDialog").modal("show");
+		  });
+		});
+	</script>
 
   <!-- Main Footer -->
   <footer class="main-footer">
@@ -388,10 +384,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 2.2.3 -->
-<script src="${contextPath}/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="${contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${contextPath}/resources/dist/js/app.min.js"></script>
 <!-- FastClick -->
@@ -408,10 +400,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${contextPath}/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
 
+<!-- Select2 -->
+<script src="${pageContext.request.contextPath}/resources/plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="${pageContext.request.contextPath}/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="${pageContext.request.contextPath}/resources/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- SlimScroll 1.3.0 -->
+<script src="${pageContext.request.contextPath}/resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="${pageContext.request.contextPath}/resources/plugins/iCheck/icheck.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath}/resources/dist/js/demo.js"></script>
 <script>
   $(function () {
+	//Initialize Select2 Elements
+	    $(".select2").select2();
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,

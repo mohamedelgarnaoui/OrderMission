@@ -1,10 +1,26 @@
 package com.order.mission.services;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collection;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.order.mission.dao.IDaoMission;
 import com.order.mission.entities.DetailMission;
 import com.order.mission.entities.DocumentType;
@@ -18,6 +34,13 @@ public class ServiceMissionImpl implements IServiceMission {
 
 	IDaoMission dao;
 	
+	@Autowired
+	ServletContext context;
+	
+	@Value("#{myProps['uploadFolder']}")
+	String UPLOAD_DIRECTORY;
+
+
 	public void setDao(IDaoMission dao) {
 		this.dao = dao;
 	}
@@ -173,7 +196,7 @@ public class ServiceMissionImpl implements IServiceMission {
 	}
 
 	@Override
-	public Mission getAllMisssionByDepartement(int idDep) {
+	public List<Mission> getAllMissionByDep(int idDep) {
 		return dao.getAllMisssionByDepartement(idDep);
 	}
 
@@ -193,8 +216,84 @@ public class ServiceMissionImpl implements IServiceMission {
 	}
 
 	@Override
-	public JustificationDocument getJustificationDocByMission(int idMission) {
+	public List<JustificationDocument> getJustificationDocByMission(int idMission) {
 		return dao.getJustificationDocByMission(idMission);
+	}
+
+	@Override
+	public List<Mission> getAllMissionByDepByState(int idDep, int idState) {
+		return dao.getAllMissionByDepByState(idDep, idState);
+	}
+
+	@Override
+	public List<Mission> getAllMissionByProfByState(int idProf, int idState) {
+		return dao.getAllMissionByProfByState(idProf, idState);
+	}
+
+	@Override
+	public List<Mission> getAllMissionByState(int idState) {
+		return dao.getAllMissionByState(idState);
+	}
+
+	@Override
+	public List<Mission> getAllMissionByProf(int idProfessor) {
+		return dao.getAllMissionByProf(idProfessor);
+	}
+
+	@Override
+	public void generatePDF(Mission m) throws DocumentException, IOException {
+		String outputFilePath = "OrdreMission_Mr." + m.getProfessor().getLastName() + ".pdf"; // New file
+		String fp = UPLOAD_DIRECTORY + "/ordremission.pdf";
+		
+		OutputStream fos = new FileOutputStream(new File(outputFilePath));
+		PdfReader pdfReader = new PdfReader(fp);
+		PdfStamper pdfStamper = new PdfStamper(pdfReader, fos);
+		String test1 [] = m.getDepartureTime().toString().split(" ");
+		String test2 [] = m.getReturnTime().toString().split(" ");
+
+		//getOverContent() allows you to write content on TOP of existing pdf content.
+		//getUnderContent() allows you to write content on BELOW of existing pdf content.
+		PdfContentByte pdfContentByte = pdfStamper.getOverContent(1);
+		
+		Collection<Transport> mtrs = getAllTransportByMission(m.getIdMission());
+		String trs = "";
+		for (Transport transport : mtrs) {
+			trs += transport.getTypeTransport() + ", ";
+		}
+		trs = trs.substring(0,trs.lastIndexOf(","));
+		System.out.println(trs);
+		addingTextToPdf(m.getIdMission()+"", 296, 700, pdfContentByte);
+		addingTextToPdf(m.getProfessor().getFirstName()+" "+m.getProfessor().getLastName(), 130, 428, pdfContentByte);//35, 760
+		addingTextToPdf(m.getSubject(), 130, 384, pdfContentByte);//35, 760
+		addingTextToPdf(trs, 130, 365, pdfContentByte);//35, 760
+		
+		addingTextToPdf(test1[0], 100, 320, pdfContentByte);//35, 760
+		addingTextToPdf(test1[1], 330, 324, pdfContentByte);//35, 760
+		
+		addingTextToPdf(m.getDestination().getName().toString(), 170, 405, pdfContentByte);//35, 760
+		
+		addingTextToPdf(test2[0], 100, 299, pdfContentByte);//35, 760
+		addingTextToPdf(test2[1], 330, 303, pdfContentByte);
+		pdfStamper.close(); //close pdfStamper
+	}
+
+	public void addingTextToPdf(String txt, int x, int y, PdfContentByte pdfContentByte) throws DocumentException, IOException {
+
+		Font f1 = FontFactory.getFont(FontFactory.COURIER, 20);
+		f1.setColor(BaseColor.LIGHT_GRAY);
+
+		
+		// Add text in existing PDF
+		pdfContentByte.beginText();//Font name //Font encoding //Font embedded
+		pdfContentByte.setFontAndSize(f1.getBaseFont(), 13); // set font and size
+		pdfContentByte.setDefaultColorspace(PdfName.DEFAULTGRAY, PdfName.BACKGROUNDCOLOR);
+		pdfContentByte.setTextMatrix(x, y); // set x and y co-ordinates
+
+		//0, 800 will write text on TOP LEFT of pdf page
+		//0, 0 will write text on BOTTOM LEFT of pdf page
+		pdfContentByte.showText(txt); // add the text
+
+		pdfContentByte.endText();
 	}
 
 }
