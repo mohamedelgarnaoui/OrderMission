@@ -40,7 +40,7 @@ public class AppInitializer {
 
 	@EventListener(ContextRefreshedEvent.class)
 	public void contextRefreshedEvent() {
-		Pays p = new Pays("Maroc");
+//		Pays p = new Pays("Maroc");
 //		p = repo.addPays(p);
 //		repo.addVille( new Ville("Casablanca", p));
 //		repo.addVille( new Ville("Rabat", p));
@@ -61,37 +61,48 @@ public class AppInitializer {
 //		repo.addDepartement(new Departement("Physique"));
 //		repo.addDepartement(new Departement("Technologique"));
 //		repo.addDepartement(new Departement("Economique"));
+//		
+//		Privileges priv1 = repo.addPrivileges(new Privileges("PROF"));
+//		Privileges priv2 = repo.addPrivileges(new Privileges("ADMIN"));
+//		Privileges priv3 = repo.addPrivileges(new Privileges("CHEFDEP"));
+//		Privileges priv5 = repo.addPrivileges(new Privileges("CHEFPERS"));
+//		Privileges priv6 = repo.addPrivileges(new Privileges("CHEFETAB"));
 //
-//		State s5 = repom.AddState(new State("Archiver", "Imprimer", 5));
+//		State s6 = repom.AddState(new State("Archiver", "Imprimer", 5));
 //
-//		State s4 = new State("Confirmer", "Confirmer", 5);
+//		State s5 = new State("Confirmer", "Confirmer", 5);
+//		s5.setState(s6);
+//		s6.setPrivilege(priv6);
+//		s5 = repom.AddState(s5);
+//		
+//		State s4 = new State("Valider N2", "Valider", 10);
 //		s4.setState(s5);
+//		s4.setPrivilege(priv5);
 //		s4 = repom.AddState(s4);
 //
-//		State s3 = new State("Valider", "Valider", 10);
+//		State s3 = new State("Valider N1", "Valider", 10);
 //		s3.setState(s4);
+//		s3.setPrivilege(priv3);
 //		s3 = repom.AddState(s3);
 //
 //		State s2 = new State("Reçue", "Revenoyer", 3);
 //		s2.setState(s3);
+//		s2.setPrivilege(priv1);
 //		s2 = repom.AddState(s2);
 //		
 //		State s1 = new State("Rejeter", "Rejeter", 3);
 //		s1.setState(s2);
+//		s1.setPrivilege(priv3);
 //		s1 = repom.AddState(s1);
 //
 //
-//		repom.AddTransport(new Transport("Voiture", ""));
-//		repom.AddTransport(new Transport("Location", ""));
+//		repom.AddTransport(new Transport("Voiture Personel", ""));
+//		repom.AddTransport(new Transport("Voiture de Location", ""));
 //		repom.AddTransport(new Transport("Train", ""));
 //		repom.AddTransport(new Transport("Avion", ""));
 //		repom.AddTransport(new Transport("Taxi", ""));
+//		repom.AddTransport(new Transport("Transport d'université", ""));
 //
-//
-//		Privileges priv1 = repo.addPrivileges(new Privileges("PROF"));
-//		Privileges priv2 = repo.addPrivileges(new Privileges("ADMIN"));
-//		Privileges priv3 = repo.addPrivileges(new Privileges("DEPCHEF"));
-//		Privileges priv4 = repo.addPrivileges(new Privileges("USER"));
 //
 //		Collection<Privileges> pp = new ArrayList<Privileges>();
 //		pp.add(priv1);
@@ -100,24 +111,39 @@ public class AppInitializer {
 //		pg1 = repo.addProfessorGrade(pg1);
 //
 //		pp = new ArrayList<Privileges>();
-//		ProfessorGrade pg2 = new ProfessorGrade("ADMINISTRATOR");
+//		ProfessorGrade pg2 = new ProfessorGrade("Administrateur");
 //		pp.add(priv2);
 //		pg2.setPrivileges(pp);
 //		pg2 = repo.addProfessorGrade(pg2);
+//		
+//		pp = new ArrayList<Privileges>();
+//		ProfessorGrade pg4 = new ProfessorGrade("Chef D'établissement");
+//		pp.add(priv2);
+//		pp.add(priv6);
+//		pg4.setPrivileges(pp);
+//		pg4 = repo.addProfessorGrade(pg4);
 //
 //		pp = new ArrayList<Privileges>();
-//		ProfessorGrade pg3 = new ProfessorGrade("DEP_CHEF");
+//		ProfessorGrade pg3 = new ProfessorGrade("Chef Département");
 //		pp.add(priv3);
-//		pp.add(priv4);
+//		pp.add(priv1);
 //		pg3.setPrivileges(pp);
 //		pg3 = repo.addProfessorGrade(pg3);
+//		
+//		pp = new ArrayList<Privileges>();
+//		ProfessorGrade pg5 = new ProfessorGrade("Chef Personnels");
+//		pp.add(priv1);
+//		pp.add(priv3);
+//		pp.add(priv5);
+//		pg5.setPrivileges(pp);
+//		pg5 = repo.addProfessorGrade(pg5);
 //
 //
 //		Collection<ProfessorGrade> gradeList = new ArrayList<ProfessorGrade>();
 //		gradeList.add(pg2);
 //		gradeList.add(pg1);
 //		gradeList.add(pg3);
-//		Professor admin = new Professor("Admin@admin.com", "admin", "admin", "Administrator", "System", null, "", "Casablanca", "", "", "", "", "", "", "Active", "Administrateur d'application");
+//		Professor admin = new Professor("Admin@admin.com", "admin", "admin", "Administrator", "System", null, "", "Casablanca", "", "", "", "", "avatar.png", "", "Active", "Administrateur d'application");
 //		admin.setProfessorGrade(gradeList);
 //		admin.setDepartement(dd);
 //		admin = repo.addProfessor(admin);
@@ -132,7 +158,7 @@ public class AppInitializer {
 //		gradeList = new ArrayList<ProfessorGrade>();
 //		gradeList.add(pg1);
 //		
-//		Professor pro = new Professor("med@prof.com", "mohamed", "medo", "SimoElga", "Mohamed", null, "", "Casablanca", "", "", "", "", "", "", "Active", "Professeur Java");
+//		Professor pro = new Professor("med@prof.com", "mohamed", "medo", "SimoElga", "Mohamed", null, "", "Casablanca", "", "", "", "", "avatar.png", "", "Active", "Professeur Java");
 //		pro.setProfessorGrade(gradeList);
 //		pro.setDepartement(dd);
 //		pro = repo.addProfessor(pro);

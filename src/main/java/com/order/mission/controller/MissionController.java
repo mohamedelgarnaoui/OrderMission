@@ -24,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,10 +52,15 @@ import com.order.mission.services.IServiceProf;
 
 @Controller
 public class MissionController implements ServletContextAware{
-	SimpleDateFormat date = new SimpleDateFormat("MM/dd/yyyy");
-	
+
 	@Value("#{myProps['uploadFolder']}")
 	String UPLOAD_DIRECTORY;
+	
+	@Value("#{myProps['subject']}")
+	String subject;
+	
+	@Value("#{myProps['message']}")
+	String message;
 
 	@Autowired
 	ServletContext context; 
@@ -63,6 +70,9 @@ public class MissionController implements ServletContextAware{
 
 	@Autowired
 	IServiceProf sp;
+	
+	@Autowired
+    private JavaMailSender mailSender;
 
 	private static final Logger logger = LoggerFactory.getLogger(MissionController.class);
 
@@ -85,7 +95,7 @@ public class MissionController implements ServletContextAware{
 
 	@RequestMapping(value="/addMission", method=RequestMethod.POST, consumes = {"multipart/form-data"})
 	public String addMission(@ModelAttribute("missionModel") MissionModel m, BindingResult bindingResult, 
-			@RequestParam("justif") MultipartFile multipart, Model model, RedirectAttributes attributes) throws IOException, ParseException {
+			@RequestParam("justif") MultipartFile multipart, Model model, RedirectAttributes attributes) {
 
 		if (multipart.isEmpty()) {
 			attributes.addFlashAttribute("message", "Veuillez sélectionner votre justification");
@@ -93,22 +103,44 @@ public class MissionController implements ServletContextAware{
 		}
 
 		String [] dep = m.getDepartureTime().split("-");
-		logger.info("Date depature--> " + m.getDepartureTime());
+		logger.info("Date depature--> " + m.getDepartureTime()+" -- "+dep[0]+" -- "+dep[1]);
 
 		logger.info("Date expiration --> " + m.getExpiryDate());
 
 		logger.info("List Transport getted from the select multiple :-->" + m.getMoyenTrans());
 
-		Date expiry = date.parse(m.getExpiryDate()),
-				depart = date.parse(dep[0]),
-				returnDate = date.parse(dep[1]);
+		String depp = dep[0].substring(0,dep[0].lastIndexOf(" "));
+		String ret = dep[1].substring(1);
+		logger.info("dep time-->"+depp+"ret time-->"+ret);
+		SimpleDateFormat date = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		SimpleDateFormat date1 = new SimpleDateFormat("MM/dd/yyyy");
+		Date expiry = null;
+		try {
+			expiry = date1.parse(m.getExpiryDate());
+		} catch (ParseException e) {
+			logger.error("expiry date does not parsed = " + m.getExpiryDate(), e);
+		}
+		Date depart = null;
+		try {
+			depart = date.parse(depp);
+			logger.info("depart date does not parsed =" + depart);
+		} catch (ParseException e) {
+			logger.error("depart date does not parsed = " + dep[0], e);
+		}
+		Date returnDate = null;
+		try {
+			returnDate = date.parse(ret);
+			logger.error("return date does not parsed = " + returnDate);
+		} catch (ParseException e) {
+			logger.error("return date does not parsed = " + dep[1], e);
+		}
 
 		Mission mission = new Mission(m.getSubject(), sp.getVille(Integer.parseInt(m.getDestination())), 
 				depart, returnDate, new Date(), expiry, "", m.getComment());
 		mission.setProfessor(sp.getConnectedProf());
-		mission.setState(sm.getState(4));
+		mission.setState(sm.getState(5));
 		mission.setDepartement(sp.getDepartement(Integer.parseInt(m.getDepartement())));
-		
+
 		String listTrans[] = m.getMoyenTrans().split(",");
 
 		List<Transport> trsList = new ArrayList<Transport>();
@@ -123,11 +155,16 @@ public class MissionController implements ServletContextAware{
 		mission = sm.AddMission(mission);
 
 		// rename and add justification document
-		byte[] bytes = multipart.getBytes();
-		Path path = Paths.get(UPLOAD_DIRECTORY + File.separator + mission.getIdMission()+"_"+multipart.getOriginalFilename());
-		logger.info(path.toString());  
-		Files.write(path, bytes);
-
+		byte[] bytes;
+		try {
+			bytes = multipart.getBytes();
+			Path path = Paths.get(UPLOAD_DIRECTORY + File.separator + mission.getIdMission()+"_"+multipart.getOriginalFilename());
+			logger.info(path.toString());  
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JustificationDocument jd = new JustificationDocument(mission.getIdMission()+"_"+multipart.getOriginalFilename(), "");
 		jd.setMission(mission);
 		sm.AddJustificationDocument(jd);
@@ -158,6 +195,21 @@ public class MissionController implements ServletContextAware{
 		}else {
 			m.setMissions(sm.getAllMissionByProf(p.getIdProfessor()));
 		}
+		List<Mission> alm = m.getMissions();
+		List<Mission> mf = new ArrayList<Mission>();
+		for (Mission mission : alm) {
+			List<Transport> tr = sm.getAllTransportByMission(mission.getIdMission());
+			for (Transport transport : tr) {
+				logger.info("inside transport list = " + transport.getTypeTransport());
+				if (transport.getTypeTransport().toLowerCase().contains("universit")) {
+					logger.info("inside transport list = " + transport.getTypeTransport());
+					mission.setHasUniversiteTrans(true);
+				}
+			}
+			mf.add(mission);
+		}
+		
+		m.setMissions(mf);
 		m.setImage(sp.getConnectedProf().getPhoto());
 		model.addAttribute("missionModel", m);
 
@@ -201,8 +253,6 @@ public class MissionController implements ServletContextAware{
 	}
 
 
-
-
 	@RequestMapping(value="/addVille", method=RequestMethod.POST)
 	public String  addVille(@ModelAttribute("missionModel") MissionModel m, BindingResult bindingResul, Model model, RedirectAttributes attributes) {
 		sp.addVille(new Ville(m.getNameVille(), sp.getPays(m.getPays())));
@@ -215,6 +265,7 @@ public class MissionController implements ServletContextAware{
 		return "redirect:/addMission";
 	}
 
+	
 	@RequestMapping(value="/addDepartement", method=RequestMethod.POST)
 	public String addDepartement(@ModelAttribute("missionModel") MissionModel m, BindingResult bindingResul, Model model, RedirectAttributes attributes) {
 		sp.addDepartement(new Departement(m.getDepartementName()));
@@ -228,11 +279,52 @@ public class MissionController implements ServletContextAware{
 
 	}
 
+	
 	@RequestMapping(value="/advanceMission/{idm}", method=RequestMethod.GET)
 	public String advanceMission(@PathVariable String idm, RedirectAttributes attributes) {
 		if (idm == null)
 			attributes.addFlashAttribute("erra", " id mission doit étre remplit");
 		Mission m = sm.getMission(Integer.parseInt(idm));
+		State s = m.getState();
+		
+		logger.info("the state id is =========> " + m.getState().getIdState()+" state name ==> " + m.getState().getName());
+		if (m.getState().getIdState() == 3) {
+			// creates a simple e-mail object
+	        SimpleMailMessage email = new SimpleMailMessage();
+	        email.setTo(m.getProfessor().getEmail());
+	        email.setSubject(subject);
+	        email.setText(message);
+	        logger.info("send email fonction => " + m.getProfessor().getEmail() + " - " + subject);
+	        // sends the e-mail
+	        mailSender.send(email);
+		}
+		
+		m.setState(s.getState());
+		m = sm.updateMission(m);
+
+		return "redirect:/mission";
+	}
+	
+	
+	@RequestMapping(value="/advMission", method=RequestMethod.POST)
+	public String advMission(@RequestParam(value = "idMiss") String idMission, 
+			@RequestParam(value = "driver") String driver, RedirectAttributes attributes) {
+		if (idMission == null)
+			attributes.addFlashAttribute("errr", "id mission doit étre remplit");
+		Mission m = sm.getMission(Integer.parseInt(idMission));
+		logger.info("inside mission  = " + m.getSubject());
+		logger.info("driver  = " + driver);
+		logger.info("id mission  = " + idMission);
+		List<Transport> tr = sm.getAllTransportByMission(m.getIdMission());
+		for (Transport transport : tr) {
+			logger.info("inside transport list = " + transport.getTypeTransport());
+			if (transport.getTypeTransport().toLowerCase().contains("universit")) {
+				logger.info("inside transport list = " + transport.getTypeTransport());
+				transport.setDriver(driver);
+				sm.updateTransport(transport);
+				break;
+			}
+		}
 		State s = m.getState();
 		m.setState(s.getState());
 		m = sm.updateMission(m);
@@ -247,7 +339,8 @@ public class MissionController implements ServletContextAware{
 		if (idMission == null)
 			attributes.addFlashAttribute("errr", "id mission doit étre remplit");
 		Mission m = sm.getMission(Integer.parseInt(idMission));
-		m.setState(sm.getState(5));
+		m.setRejectionRaison(raison);
+		m.setState(sm.getState(6));
 		m = sm.updateMission(m);
 
 		return "redirect:/mission";
@@ -263,14 +356,13 @@ public class MissionController implements ServletContextAware{
 	}
 
 
-
 	@RequestMapping(value="/printMission/{idm}", method=RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> printMission(@PathVariable String idm, RedirectAttributes attributes) {
 		if (idm == null)
 			attributes.addFlashAttribute("errd", "id mission doit étre remplit");
 		Mission m = sm.getMission(Integer.parseInt(idm));
-		m.setState(sm.getState(5));
-		
+		m.setState(sm.getState(1));
+
 		try {
 			sm.generatePDF(m);
 			File file = new File("OrdreMission_Mr."+m.getProfessor().getLastName()+".pdf");
@@ -282,23 +374,24 @@ public class MissionController implements ServletContextAware{
 			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
 			m = sm.updateMission(m);
 			return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
-		
+
 		}catch (Exception e){
 			String message = "Errore nel download del file  "+e.getMessage();
 			logger.error(message, e);
 			return new ResponseEntity<InputStreamResource>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 	
 	@RequestMapping(value="/downloadMission/{idm}", method=RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> downloadMission(@PathVariable String idm, RedirectAttributes attributes) {
 		if (idm == null)
 			attributes.addFlashAttribute("errd", "id mission doit étre remplit");
 		Mission m = sm.getMission(Integer.parseInt(idm));
-		
+
 		try {
 			List<JustificationDocument> js = sm.getJustificationDocByMission(m.getIdMission());
-			
+
 			File file = new File(UPLOAD_DIRECTORY + "/" +js.get(0).getDocument());
 			HttpHeaders respHeaders = new HttpHeaders();
 			MediaType mediaType = MediaType.parseMediaType("application/pdf");
@@ -307,7 +400,7 @@ public class MissionController implements ServletContextAware{
 			respHeaders.setContentDispositionFormData("attachment", file.getName());
 			InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
 			return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
-		
+
 		}catch (Exception e){
 			String message = "Errore nel download del file  "+e.getMessage();
 			logger.error(message, e);

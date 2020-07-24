@@ -11,7 +11,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Big Sale | Registration Page</title>
+  <title>OrderMission | Page d'inscription</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -25,14 +25,15 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="${contextPath}/resources/plugins/iCheck/square/blue.css">
 </head>
-<body class="hold-transition register-page">
+<body class="hold-transition register-page" style="height: 100vh; width: 100vw; background-image: url('${contextPath}/resources/dist/img/fssm-bg.jpg'); background-size: cover;">
 <div class="register-box">
-  <div class="register-logo">
-    <a href="index2.html"><b>Order</b> Mission</a>
-  </div>
+  
   <div class="register-box-body">
+  	  <div class="login-logo">
+	    <a href="#"><img src="${contextPath}/resources/dist/img/logoo.png"></a>
+	  </div>
     <p class="login-box-msg">Professeur inscription</p>
-    <f:form  modelAttribute="userForm" method="post">
+    <f:form  modelAttribute="userForm" method="post" action="./registration?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
 		<spring:bind path="lastName">
 			<div class="form-group has-feedback">
 				<f:input type="text" class="form-control" path="lastName" required="required" placeholder="Votre Nom"></f:input>
@@ -40,6 +41,7 @@
 				<f:errors path="lastName"></f:errors>
 			</div>
 		</spring:bind>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<spring:bind path="firstName">
 			<div class="form-group has-feedback">
 		        <f:input type="text" class="form-control" path="firstName" required="required" placeholder="Votre Prénom"></f:input>
@@ -52,6 +54,13 @@
 		        <f:input type="text" class="form-control" path="username" required="required" placeholder=" Votre Matricule"></f:input>
 		        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
 		        <f:errors path="username"></f:errors>
+		      </div>
+      	</spring:bind>
+      	<spring:bind path="profession">
+			  <div class="form-group has-feedback">
+		        <f:input type="text" class="form-control" path="profession" required="required" placeholder=" Votre profession"></f:input>
+		        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+		        <f:errors path="profession"></f:errors>
 		      </div>
       	</spring:bind>
 	    <spring:bind path="email">
@@ -82,13 +91,10 @@
 	        <f:errors path="birthDate"></f:errors>
 	      </div>
       </spring:bind>
-      <spring:bind path="photo">
 		  <div class="form-group has-feedback">
-	        <f:input type="file" class="form-control" path="photo" required="required" placeholder="Photo" title="Votre Photo"></f:input>
+	        <input type="file" class="form-control" name="file" required="required" placeholder="Photo" title="Votre Photo"></input>
 	        <span class="glyphicon glyphicon-camera form-control-feedback"></span>
-	        <f:errors path="photo"></f:errors>
 	      </div>
-      </spring:bind>
       <spring:bind path="numCIN">
 		  <div class="form-group has-feedback">
 	        <f:input type="text" class="form-control" path="numCIN" required="required" placeholder="Numéro CIN" title="Votre numéro CIN"></f:input>
@@ -98,11 +104,12 @@
       </spring:bind>
       <spring:bind path="departement">
 		  <div class="form-group has-feedback">
-	        <f:select class="form-control" path="departement" required="required" >
-				<f:option value="" selected="selected" >Votre departement</f:option>
-				<f:option value="Informatique">Informatique</f:option>
-				<f:option value="Informatique">Physique</f:option>
-			</f:select>
+	        <f:select class="form-control select2"  path="departement" required="required" style="width: 100%;">
+				<f:option selected="selected" value="">Selectionner Département</f:option>
+				<c:forEach items="${missionModel.departements}" var="dep">
+					<f:option value="${dep.idDep}">${dep.name}</f:option>
+				</c:forEach>
+            </f:select>
 			<span class="glyphicon glyphicon-user form-control-feedback"></span>
 			<f:errors path="departement"></f:errors>
 	      </div>
@@ -121,6 +128,7 @@
 	        <f:errors path="adresses"></f:errors>
 	      </div>
       </spring:bind>
+      <span>${message}</span>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
@@ -129,6 +137,8 @@
             </label>
           </div>
         </div>
+     	
+					
         <!-- /.col -->
         <div class="col-xs-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Demande d'inscription</button>

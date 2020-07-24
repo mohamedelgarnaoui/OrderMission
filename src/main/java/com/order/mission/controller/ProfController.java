@@ -27,9 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.order.mission.entities.Departement;
+import com.order.mission.entities.Mission;
 import com.order.mission.entities.Privileges;
 import com.order.mission.entities.Professor;
 import com.order.mission.entities.ProfessorGrade;
+import com.order.mission.entities.Transport;
 import com.order.mission.entities.Ville;
 import com.order.mission.model.MissionModel;
 import com.order.mission.model.UserModel;
@@ -41,12 +43,12 @@ import com.order.mission.validator.ProfValidator;
 @Controller
 public class ProfController {
 	SimpleDateFormat date = new SimpleDateFormat("MM/dd/yyyy");
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ProfController.class);
-	
+
 	@Value("#{myProps['uploadFolder']}")
 	String UPLOAD_DIRECTORY;
-	
+
 	@Autowired
 	IServiceProf sp;
 
@@ -55,12 +57,10 @@ public class ProfController {
 
 	@Autowired
 	SecurityService ss;
-	
+
 
 	@Autowired
 	IServiceMission sm;
-	
-	
 
 
 	@RequestMapping(value= {"/","/index"}, method=RequestMethod.GET)
@@ -80,13 +80,28 @@ public class ProfController {
 		}
 		logger.info("Admin connected " + admin);
 		if (admin) {
-			m.setMissions(sm.getAllMissionByState(4));
+			m.setMissions(sm.getAllMissionByState(5));
 		}else if (chef) {
-			m.setMissions(sm.getAllMissionByDepByState(p.getDepartement().getIdDep(),4));
+			m.setMissions(sm.getAllMissionByDepByState(p.getDepartement().getIdDep(),5));
 		}else {
-			m.setMissions(sm.getAllMissionByProfByState(p.getIdProfessor(),4));
+			m.setMissions(sm.getAllMissionByProfByState(p.getIdProfessor(),5));
 		}
 		m.setImage(sp.getConnectedProf().getPhoto());
+		
+		List<Mission> alm = m.getMissions();
+		List<Mission> mf = new ArrayList<Mission>();
+		for (Mission mission : alm) {
+			List<Transport> tr = sm.getAllTransportByMission(mission.getIdMission());
+			for (Transport transport : tr) {
+				logger.info("inside transport list = " + transport.getTypeTransport());
+				if (transport.getTypeTransport().toLowerCase().contains("universit")) {
+					logger.info("inside transport list = " + transport.getTypeTransport());
+					mission.setHasUniversiteTrans(true);
+				}
+			}
+			mf.add(mission);
+		}
+		m.setMissions(mf);
 		model.addAttribute("missionModel", m);
 
 		return "index";
@@ -94,14 +109,29 @@ public class ProfController {
 
 	@RequestMapping(value="/registration", method=RequestMethod.GET)
 	public String signUpPage(Model model) {
-		model.addAttribute("userForm", new UserModel());
+		MissionModel m = new MissionModel();
+		m.setVilles(sp.getAllVille());
+		m.setDepartements(sp.getAllDepartement());
+
+		model.addAttribute("missionModel", m);
+
+		UserModel u = new UserModel();
+		model.addAttribute("userForm",u);
 		return "register";
 	}
 
-	@RequestMapping(value="/registration", method=RequestMethod.POST)
-	public String signUpPage(@ModelAttribute("userForm") UserModel userForm, BindingResult bindingResult, Model model) {
-		pv.validate(userForm, bindingResult);
-
+	@RequestMapping(value="/registration", method=RequestMethod.POST, consumes = {"multipart/form-data"})
+	public String signUpPage(@ModelAttribute("userForm") UserModel userForm,@RequestParam("file") MultipartFile multipart,
+			BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+		logger.info("here is the error " +bindingResult.getFieldError());
+		pv.validate(userForm,  bindingResult);
+		if (bindingResult.hasErrors()) {
+			return "redirect:registration";
+		}
+		if (multipart.isEmpty()) {
+			attributes.addFlashAttribute("message", "Veuillez sélectionner votre justification");
+			return "redirect:registration";
+		}
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 		Date dd = null;
 		try {
@@ -109,18 +139,29 @@ public class ProfController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		if (bindingResult.hasErrors()) {
-			return "register";
-		}
 		Professor p = new Professor(userForm.getEmail(), userForm.getUsername(), userForm.getPassword(), 
-				userForm.getLastName(), userForm.getFirstName(), dd,userForm.getAdresses(),
+				userForm.getLastName(), userForm.getFirstName(), dd, userForm.getAdresses(),
 				userForm.getCity(), userForm.getPhone(), userForm.getMobile(),userForm.getNumCIN(), 
-				userForm.getResume(), userForm.getPhoto(), userForm.getCINPrinted(), "Created", userForm.getProfession() );
-		sp.addProfessor(p);
+				userForm.getResume(), userForm.getUsername()+"_"+multipart.getOriginalFilename(), userForm.getCINPrinted(), "Created", userForm.getProfession() );
 
-		ss.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-		return "redirect:/index";
+		p.setDepartement(sp.getDepartement(Integer.parseInt(userForm.getDepartement())));
+		p = sp.addProfessor(p);
+		// rename and add  document
+		byte[] bytes;
+		try {
+			bytes = multipart.getBytes();
+			Path path = Paths.get(UPLOAD_DIRECTORY + File.separator + userForm.getUsername()+"_"+multipart.getOriginalFilename());
+			logger.info(path.toString());  
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			e.printStackTrace();
+		}
+		if (multipart.isEmpty()) {
+			attributes.addFlashAttribute("message", "Veuillez veuillez attendre jusqu'a l'attribution d'une grade");
+			return "redirect:registration";
+		}
+		return "redirect:login";
 	}
 
 	@RequestMapping(value="/addProfessor", method=RequestMethod.GET)
@@ -158,15 +199,15 @@ public class ProfController {
 
 		Date dd = null;
 		dd = date.parse(userForm.getBirthDate());
-		
+
 		Ville v = sp.getVille(Integer.parseInt(userForm.getCity()));
 		Professor p = new Professor(userForm.getEmail(), userForm.getUsername(), userForm.getPassword(), 
 				userForm.getLastName(), userForm.getFirstName(), dd, userForm.getAdresses(),
 				v.getName(), userForm.getPhone(), userForm.getMobile(),userForm.getNumCIN(), 
 				userForm.getResume(), userForm.getUsername()+"_"+multipart.getOriginalFilename(), userForm.getCINPrinted(), "Created", userForm.getProfession() );
-		
+
 		p.setDepartement(sp.getDepartement(Integer.parseInt(userForm.getDepartement())));
-		
+
 		String listg[] = userForm.getGrade().split(",");
 
 		List<ProfessorGrade> gList = new ArrayList<ProfessorGrade>();
@@ -176,7 +217,7 @@ public class ProfController {
 		}
 		p.setProfessorGrade(gList);
 		p = sp.addProfessor(p);
-		
+
 		// rename and add  document
 		byte[] bytes = multipart.getBytes();
 		Path path = Paths.get(UPLOAD_DIRECTORY + File.separator + userForm.getUsername()+"_"+multipart.getOriginalFilename());
@@ -200,14 +241,25 @@ public class ProfController {
 	@RequestMapping(value = "/professor", method = RequestMethod.GET)
 	public String allProfessor(@ModelAttribute("userForm") UserModel userForm, Model model) {
 		UserModel u = new UserModel();
-		u.setProfessors(sp.getAllProfessor());
+		List<Professor> profs = sp.getAllProfessor();
+		List<Professor> pf = new ArrayList<Professor>();
+		for (Professor professor : profs) {
+			List<ProfessorGrade> pg = sp.getAllGradeByProf(professor.getIdProfessor());
+			if (pg.size() == 0) {
+				professor.setStatus("0");
+			}else {
+				professor.setStatus(pg.size()+"");
+			}
+			pf.add(professor);
+		}
+		u.setProfessors(pf);
 		u.setProf(sp.getConnectedProf());
 		u.setGrades(sp.getAllProfessorGrade());
 		u.setImage(sp.getConnectedProf().getPhoto());
 		model.addAttribute("userForm", u);
 		return "listprof";
 	}
-	
+
 	@RequestMapping(value="/addVill", method=RequestMethod.POST)
 	public String  addVille(@ModelAttribute("missionModel") MissionModel m, BindingResult bindingResul, Model model, RedirectAttributes attributes) {
 		sp.addVille(new Ville(m.getNameVille(), sp.getPays(m.getPays())));
@@ -233,14 +285,14 @@ public class ProfController {
 		return "redirect:/addProfessor";
 
 	}
-	
+
 	@RequestMapping(value="/addGrade", method=RequestMethod.POST)
 	public String addGrade(@RequestParam(value = "idProf") String idProf, 
 			@RequestParam(value = "grade") String grade, RedirectAttributes attributes) {
 		if (idProf == null)
 			attributes.addFlashAttribute("errr", "id Prof doit étre remplit");
 		Professor p = sp.getProfessor(Integer.parseInt(idProf));
-		
+
 		String listg[] = grade.split(",");
 		List<ProfessorGrade> gList = new ArrayList<ProfessorGrade>();
 		for (String g : listg) {

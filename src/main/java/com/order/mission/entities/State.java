@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -23,7 +24,10 @@ public class State {
 	@OneToOne
 	@JoinColumn(name = "id_state")
 	private State state;
-
+	@ManyToOne
+	@JoinColumn(name = "id_priv")
+	private Privileges privilege;
+	
 	public State() {
 		super();
 	}
@@ -88,6 +92,14 @@ public class State {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public Privileges getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(Privileges privilege) {
+		this.privilege = privilege;
 	}
 
 }

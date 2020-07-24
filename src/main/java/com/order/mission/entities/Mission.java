@@ -10,6 +10,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Mission {
@@ -20,9 +25,14 @@ public class Mission {
 	@ManyToOne
 	@JoinColumn(name = "destination")
 	private Ville destination;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date departureTime;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date returnTime;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
+	@Temporal(TemporalType.DATE)
 	private Date expiryDate;
 	private String rejectionRaison;
 	private String comment;
@@ -43,6 +53,8 @@ public class Mission {
 	private Collection<JustificationDocument> justificationDocument;
 	@OneToMany
 	private Collection<DetailMission> detailMission;
+	@Transient
+	private boolean hasUniversiteTrans;
 
 	public Mission() {
 		super();
@@ -193,6 +205,14 @@ public class Mission {
 
 	public void setDetailMission(Collection<DetailMission> detailMission) {
 		this.detailMission = detailMission;
+	}
+
+	public boolean isHasUniversiteTrans() {
+		return hasUniversiteTrans;
+	}
+
+	public void setHasUniversiteTrans(boolean hasUniversiteTrans) {
+		this.hasUniversiteTrans = hasUniversiteTrans;
 	}
 
 }

@@ -222,7 +222,7 @@
 											<th>Date d'expiration</th>
 											<th>Professeur</th>
 											<th>Status</th>
-											<th>Actions</th>
+											<th style="width: 10%;">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -249,15 +249,24 @@
 														<li><a href="./updateMission?idm=${m.idMission}">Modifier</a></li>
 														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li><a href="#" data-href="./deleteMission/${m.idMission}" data-toggle="modal" data-target="#confirm-delete">Supprimer</a></li></sec:authorize>
 														<li class="divider"></li>
-														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')">
-															<li style="display: ${m.state.state.state == null ? 'none' : ''}">
-																<a href="./advanceMission/${m.idMission}">${m.state.state.action}</a>
-															</li>
+														<sec:authorize access="hasAnyAuthority('ADMIN','CHEFETAB','${m.state.privilege.name}')">
+															<c:choose>
+																 <c:when test="${m.state.state.idState == 3 && m.hasUniversiteTrans}">
+																 	<li style="display: ${m.state.state.state == null ? 'none' : ''}">
+																		<a data-id="${m.idMission}" title="Valider" class="open-advanceDialog">${m.state.state.action}</a>
+																	</li>
+																</c:when>
+																<c:otherwise>
+																	<li style="display: ${m.state.state.state == null ? 'none' : ''}">
+																		<a href="./advanceMission/${m.idMission}">${m.state.state.action}</a>
+																	</li>
+																</c:otherwise>
+															</c:choose>
 														</sec:authorize>
 														<li style="display: ${m.state.state.state == null ? '' : 'none'}">
 															<a href="./printMission/${m.idMission}">${m.state.state.action}</a>
 														</li>
-														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF')"><li style="display: ${m.state.idState == 5 ? 'none' : ''}"><a data-id="${m.idMission}" title="Rejeter" class="open-rejeterDialog">Rejeter</a></li></sec:authorize>
+														<sec:authorize access="hasAnyAuthority('ADMIN','DEPCHEF','CHEFETAB','CHEFPERS')"><li style="display: ${m.state.idState == 5 ? 'none' : ''}"><a data-id="${m.idMission}" title="Rejeter" class="open-rejeterDialog">Rejeter</a></li></sec:authorize>
 													</ul>
 												</div>
 											</td>
@@ -288,6 +297,32 @@
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
+		
+		
+		<div id="advanceDialog" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+			  <div class="modal-header">
+		      		Confirmation
+		      </div>
+		      <form action="./advMission" method="post">
+			      <div class="modal-body">
+					<input type="hidden" name="idMiss" id="idMiss" value=""/>
+			        <div class="form-group">
+	                	<label>chauffeur :</label>
+	                  	<input type="text" name="driver" class="form-control" placeholder="Entrer le chauffeur"/>
+	                </div>
+	                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			      </div>
+			      <div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+		                <button type="submit" class="btn btn-primary">Confirmer</button>
+		          </div>
+	          </form>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 		
 		
 		<div id="rejeterDialog" class="modal fade" tabindex="-1" role="dialog">
@@ -342,6 +377,13 @@
 		  $(".open-rejeterDialog").click(function(){
 		     $('#idMission').val($(this).data('id'));
 		    $("#rejeterDialog").modal("show");
+		  });
+		});
+		
+		$(function(){
+		  $(".open-advanceDialog").click(function(){
+		     $('#idMiss').val($(this).data('id'));
+		    $("#advanceDialog").modal("show");
 		  });
 		});
 	</script>

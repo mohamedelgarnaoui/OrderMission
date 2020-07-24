@@ -8,13 +8,13 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
-        <intercept-url pattern="/index" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
-        <intercept-url pattern="/mission" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
-        <intercept-url pattern="/mission/*" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
-        <intercept-url pattern="/addMission" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF')"/>
-        <intercept-url pattern="/professor" access="hasAnyAuthority('ADMIN','DEPCHEF')"/>
-        <intercept-url pattern="/addProfessor" access="hasAnyAuthority('ADMIN','DEPCHEF')"/>
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','USER','PROF','DEPCHEF','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/index" access="hasAnyAuthority('ADMIN','USER','PROF','CHEFDEP','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/mission" access="hasAnyAuthority('ADMIN','USER','PROF','CHEFDEP','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/mission/*" access="hasAnyAuthority('ADMIN','USER','PROF','CHEFDEP','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/addMission" access="hasAnyAuthority('ADMIN','USER','PROF','CHEFDEP','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/professor" access="hasAnyAuthority('ADMIN','CHEFPERS','CHEFETAB')"/>
+        <intercept-url pattern="/addProfessor" access="hasAnyAuthority('ADMIN','CHEFPERS','CHEFETAB')"/>
         
         <form-login login-page="/login" default-target-url="/index" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
         

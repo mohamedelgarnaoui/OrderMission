@@ -16,6 +16,7 @@ public class Transport {
 	private int idTransport;
 	private String typeTransport;
 	private String comment;
+	private String driver;
 	
 	@ManyToMany(mappedBy = "transport")
 	private Collection<Mission> missions;
@@ -68,6 +69,14 @@ public class Transport {
 
 	public void setMissions(Collection<Mission> missions) {
 		this.missions = missions;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
 	}
 
 }

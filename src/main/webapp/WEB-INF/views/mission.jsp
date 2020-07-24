@@ -407,7 +407,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${pageContext.request.contextPath}/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -430,35 +430,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
     $(".select2").select2();
 
     //Datemask dd/mm/yyyy
-    $("#datemask").inputmask("dd/MM/yyyy", {"placeholder": "dd/MM/yyyy"});
+    $("#datemask").inputmask("dd/MM/yyyy hh:mm", {"placeholder": "dd/MM/yyyy hh:mm"});
     //Datemask2 mm/dd/yyyy
-    $("#datemask2").inputmask("dd/MM/yyyy", {"placeholder": "dd/MM/yyyy"});
+    $("#datemask2").inputmask("dd/MM/yyyy hh:mm", {"placeholder": "dd/MM/yyyy hh:mm"});
     //Money Euro
     $("[data-mask]").inputmask();
 
     //Date range picker
-    $('#reservation').daterangepicker();
+   // $('#reservation').daterangepicker();
     //Date range picker with time picker
-    $('#reservationtime').daterangepicker({autoApply: true, timePicker: true, timePickerIncrement: 30, format: 'dd/MM/yyyy hh:mm'});
-    //Date range as a button
-    $('#daterange-btn').daterangepicker(
-        {
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment()
-        },
-        function (start, end) {
-          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    //$('#reservationtime').daterangepicker({timePicker: true, format: 'dd/MM/yyyy hh:mm'});
+    
+    $("#reservationtime").daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'MM/DD/YYYY H:mm'
         }
-    );
-
+    });
+    
+    //Date range as a button
+    
     //Date picker
     $('#datepicker').datepicker({
       autoclose: true

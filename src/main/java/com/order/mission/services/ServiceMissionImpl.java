@@ -257,8 +257,12 @@ public class ServiceMissionImpl implements IServiceMission {
 		
 		Collection<Transport> mtrs = getAllTransportByMission(m.getIdMission());
 		String trs = "";
+		String driver = "";
 		for (Transport transport : mtrs) {
 			trs += transport.getTypeTransport() + ", ";
+			if ((transport.getTypeTransport().toLowerCase().contains("universit"))) {
+				driver = transport.getDriver();
+			}
 		}
 		trs = trs.substring(0,trs.lastIndexOf(","));
 		System.out.println(trs);
@@ -266,6 +270,7 @@ public class ServiceMissionImpl implements IServiceMission {
 		addingTextToPdf(m.getProfessor().getFirstName()+" "+m.getProfessor().getLastName(), 130, 428, pdfContentByte);//35, 760
 		addingTextToPdf(m.getSubject(), 130, 384, pdfContentByte);//35, 760
 		addingTextToPdf(trs, 130, 365, pdfContentByte);//35, 760
+		addingTextToPdf(driver, 130, 345, pdfContentByte);//35, 760
 		
 		addingTextToPdf(test1[0], 100, 320, pdfContentByte);//35, 760
 		addingTextToPdf(test1[1], 330, 324, pdfContentByte);//35, 760

@@ -31,13 +31,13 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="index2.html"><b>Order Mission</b></a>
-  </div>
+<body class="hold-transition login-page" style="height: 100vh; width: 100vw; background-image: url('${contextPath}/resources/dist/img/fssm-bg.jpg'); background-size: cover;">
+<div class="login-box" >
   <!-- /.login-logo -->
   <div class="login-box-body">
+	  <div class="login-logo">
+	    <a href="#"><img src="${contextPath}/resources/dist/img/logoo.png"></a>
+	  </div>
     <p class="login-box-msg">Connectez-vous pour démarrer votre session</p>
 
     <form action="${contextPath}/login" method="post">

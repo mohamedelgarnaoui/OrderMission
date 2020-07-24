@@ -267,7 +267,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								</button>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="#" data-href="./deleteProfessor/${p.idProfessor}" data-toggle="modal" data-target="#confirm-delete">Supprimer</a></li>
-									<li><a href="#">Modifier</a></li>
 									<li class="divider"></li>
 									<li><a data-id="${p.idProfessor}" title="Ajouter grade" class="open-gradeDialog">Attribuer grade</a></li>
 								</ul>
