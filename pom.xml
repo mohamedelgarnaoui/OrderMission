@@ -15,7 +15,7 @@
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<spring-data-jpa.version>1.8.2.RELEASE</spring-data-jpa.version>
-		<hibernate.version>4.3.11.Final</hibernate.version>
+		<hibernate.version>5.4.24.Final</hibernate.version>
 		<hibernate-validator.version>5.2.1.Final</hibernate-validator.version>
 		<mysql-connector.version>5.1.38</mysql-connector.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
